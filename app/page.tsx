@@ -22,7 +22,7 @@ import {
 import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
-import { permitStore, type Permit } from "@/lib/permit-store"
+import { permitStore, type Permit } from "@/lib/permit-store-supabase"
 import { localStorageUtils } from "@/lib/local-storage"
 import { calculatePermitStats, type PermitStats } from "@/lib/statistics"
 
@@ -32,53 +32,45 @@ function Dashboard() {
   const [pendingApprovals, setPendingApprovals] = useState<Permit[]>([])
   const [recentPermits, setRecentPermits] = useState<Permit[]>([])
   const [stats, setStats] = useState<PermitStats>({ inProgress: 0, approved: 0, rejected: 0, total: 0 })
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (user) {
-      // Get pending approvals using user's email
-      const pending = permitStore.getPendingForApprover(user.email)
-      setPendingApprovals(pending)
-
-      // Get all permits from both sources
-      const fromStore = permitStore.getAll()
-      const fromLocalStorage = localStorageUtils.getAllPermits()
-      
-      // Convert local storage permits to Permit format and combine
-      const convertedLocalPermits: Permit[] = fromLocalStorage.map(p => ({
-        id: p.id,
-        type: p.type as "general" | "fire" | "supplementary",
-        title: p.title,
-        requester: {
-          name: p.requester.name,
-          department: p.requester.department,
-          email: "user@company.com"
-        },
-        createdAt: p.createdAt,
-        status: p.status as "draft" | "pending" | "in-progress" | "approved" | "rejected",
-        currentApproverIndex: 0,
-        approvers: [],
-        data: p.data
-      }))
-      
-      // Combine and remove duplicates based on ID
-      const permitMap = new Map<string, Permit>()
-      
-      // Add permits from store first
-      fromStore.forEach(p => permitMap.set(p.id, p))
-      
-      // Add permits from localStorage (will override if same ID exists)
-      convertedLocalPermits.forEach(p => permitMap.set(p.id, p))
-      
-      // Convert back to array and sort by creation date
-      const allPermits = Array.from(permitMap.values())
-        .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-      
-      setRecentPermits(allPermits.slice(0, 3))
-      
-      // Calculate real statistics
-      const realStats = calculatePermitStats()
-      setStats(realStats)
+    const loadDashboardData = async () => {
+      if (user) {
+        try {
+          setLoading(true)
+          
+          // Get all permits from Supabase
+          const allPermits = await permitStore.getAll()
+          
+          // Filter pending approvals for current user (simplified for now)
+          const pending = allPermits.filter(p => 
+            p.status === 'pending' || p.status === 'in-progress'
+          )
+          setPendingApprovals(pending.slice(0, 3))
+          
+          // Sort by creation date and get recent permits
+          const sortedPermits = allPermits
+            .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          setRecentPermits(sortedPermits.slice(0, 3))
+          
+          // Calculate statistics
+          const statsData = {
+            total: allPermits.length,
+            inProgress: allPermits.filter(p => p.status === 'pending' || p.status === 'in-progress').length,
+            approved: allPermits.filter(p => p.status === 'approved').length,
+            rejected: allPermits.filter(p => p.status === 'rejected').length
+          }
+          setStats(statsData)
+        } catch (error) {
+          console.error('Error loading dashboard data:', error)
+        } finally {
+          setLoading(false)
+        }
+      }
     }
+
+    loadDashboardData()
   }, [user])
 
   const statsCards = [
@@ -341,7 +333,12 @@ function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {pendingApprovals.length === 0 ? (
+                  {loading ? (
+                    <div className="text-center py-4">
+                      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                      <p className="text-sm text-muted-foreground">로딩 중...</p>
+                    </div>
+                  ) : pendingApprovals.length === 0 ? (
                     <p className="text-sm text-muted-foreground text-center py-4">결재 대기중인 허가서가 없습니다.</p>
                   ) : (
                     pendingApprovals.slice(0, 3).map((permit) => (
@@ -394,37 +391,46 @@ function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {recentPermits.map((permit) => (
-                    <div key={permit.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div>
-                        <p className="font-medium text-foreground">{permit.title}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {permit.requester.name} • {permit.requester.department} • {formatDate(permit.createdAt)}
-                        </p>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Badge
-                          variant={
-                            permit.status === "approved"
-                              ? "default"
-                              : permit.status === "rejected"
-                                ? "destructive"
-                                : "outline"
-                          }
-                        >
-                          {permit.status === "approved" ? "승인완료" : permit.status === "rejected" ? "반려" : "진행중"}
-                        </Badge>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => router.push(`/permits/view/${permit.id}`)}
-                          className="border-border hover:bg-muted bg-transparent"
-                        >
-                          <Eye className="w-3 h-3" />
-                        </Button>
-                      </div>
+                  {loading ? (
+                    <div className="text-center py-4">
+                      <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-2"></div>
+                      <p className="text-sm text-muted-foreground">로딩 중...</p>
                     </div>
-                  ))}
+                  ) : recentPermits.length === 0 ? (
+                    <p className="text-sm text-muted-foreground text-center py-4">최근 작업허가서가 없습니다.</p>
+                  ) : (
+                    recentPermits.map((permit) => (
+                      <div key={permit.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <p className="font-medium text-foreground">{permit.title}</p>
+                          <p className="text-sm text-muted-foreground">
+                            {permit.requester.name} • {permit.requester.department} • {formatDate(permit.createdAt)}
+                          </p>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Badge
+                            variant={
+                              permit.status === "approved"
+                                ? "default"
+                                : permit.status === "rejected"
+                                  ? "destructive"
+                                  : "outline"
+                            }
+                          >
+                            {permit.status === "approved" ? "승인완료" : permit.status === "rejected" ? "반려" : "진행중"}
+                          </Badge>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => router.push(`/permits/view/${permit.id}`)}
+                            className="border-border hover:bg-muted bg-transparent"
+                          >
+                            <Eye className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))
+                  )}
                 </div>
               </CardContent>
             </Card>

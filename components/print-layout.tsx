@@ -1,5 +1,5 @@
 "use client"
-import type { Permit } from "@/lib/permit-store"
+import type { Permit } from "@/lib/permit-store-supabase"
 
 interface PrintLayoutProps {
   permit: Permit
