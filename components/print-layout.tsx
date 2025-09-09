@@ -567,41 +567,65 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 밀폐공간 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 전 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.oxygenLevel && <div>• 산소농도 측정 완료</div>}
+                          {formData?.preWork?.gasCheck && <div>• 가연성가스 측정 완료</div>}
+                          {formData?.preWork?.ventilation && <div>• 환기장치 설치 완료</div>}
+                          {formData?.preWork?.rescueEquipment && <div>• 구조장비 준비 완료</div>}
+                          {formData?.preWork?.communicationDevice && <div>• 통신장비 확인 완료</div>}
+                          {formData?.preWork?.accessControl && <div>• 출입통제 조치 완료</div>}
+                          {formData?.preWork?.watcher && <div>• 감시자 배치 완료</div>}
+                          {formData?.preWork?.emergencyPlan && <div>• 비상계획 수립 완료</div>}
+                        </div>
+                      </div>
                       <table className="print-table">
                         <thead>
                           <tr>
-                            <th>점검항목</th>
-                            <th>기준</th>
+                            <th>측정항목</th>
                             <th>측정값</th>
-                            <th>확인</th>
+                            <th>측정시간</th>
+                            <th>측정자</th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>산소농도</td>
-                            <td>18% ~ 23.5%</td>
-                            <td>{formData?.confinedSpace?.oxygenLevel || ""}</td>
-                            <td>{formData?.confinedSpace?.oxygenCheck ? "✓" : ""}</td>
-                          </tr>
-                          <tr>
-                            <td>가연성가스</td>
-                            <td>&lt; 10% LEL</td>
-                            <td>{formData?.confinedSpace?.gasLevel || ""}</td>
-                            <td>{formData?.confinedSpace?.gasCheck ? "✓" : ""}</td>
-                          </tr>
-                          <tr>
-                            <td>유해가스</td>
-                            <td>기준치 이하</td>
-                            <td>{formData?.confinedSpace?.toxicLevel || ""}</td>
-                            <td>{formData?.confinedSpace?.toxicCheck ? "✓" : ""}</td>
-                          </tr>
+                          {formData?.measurements?.map((m: any, idx: number) => (
+                            <tr key={idx}>
+                              <td>{m.item || ""}</td>
+                              <td>{m.value || ""}</td>
+                              <td>{m.time || ""}</td>
+                              <td>{m.measurer || ""}</td>
+                            </tr>
+                          )) || (
+                            <>
+                              <tr>
+                                <td>산소농도</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>가연성가스</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                              <tr>
+                                <td>유해가스</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                              </tr>
+                            </>
+                          )}
                         </tbody>
                       </table>
                       <div style={{ marginTop: "10px" }}>
-                        <strong>감시자:</strong> {formData?.confinedSpace?.watcher || ""}
+                        <strong>감시자:</strong> {formData?.watcherName || ""}
                       </div>
                       <div style={{ marginTop: "5px" }}>
-                        <strong>비상연락처:</strong> {formData?.confinedSpace?.emergencyContact || ""}
+                        <strong>비상연락처:</strong> {formData?.emergencyContact || ""}
                       </div>
                     </div>
                   </div>
@@ -614,28 +638,48 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 고소작업 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 전 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.safetyHarness && <div>• 안전대(안전그네) 착용</div>}
+                          {formData?.preWork?.openingProtection && <div>• 개구부 방호조치 (덮개, 안전난간 설치)</div>}
+                          {formData?.preWork?.clampConnection && <div>• 승강설비 클램프 연결상태 확인</div>}
+                          {formData?.preWork?.workPlatform && <div>• 작업발판 설치상태 확인</div>}
+                          {formData?.preWork?.safetyRail && <div>• 안전난간 (상부, 중간) 설치</div>}
+                          {formData?.preWork?.loadCapacity && <div>• 작업발판 및 통로 적재하중 확인</div>}
+                          {formData?.preWork?.wheelOutrigger && <div>• 이동식비계 바퀴고정 또는 아웃트리거 설치</div>}
+                          {formData?.preWork?.ladderInstallation && <div>• 사다리 설치상태 확인</div>}
+                          {formData?.preWork?.safetyDevices && <div>• 고소작업대/차 안전장치 작동확인</div>}
+                          {formData?.preWork?.safetyCertification && <div>• 안전인증품(비계, 안전대) 사용</div>}
+                          {formData?.preWork?.groundObstacles && <div>• 지상 장애물 제거</div>}
+                          {formData?.preWork?.signalControl && <div>• 신호 및 통제수 배치</div>}
+                          {formData?.preWork?.harnessRail && <div>• 안전대, 안전난간 부착설비 설치</div>}
+                        </div>
+                      </div>
                       <table className="print-table">
                         <tbody>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>작업높이</td>
-                            <td>{formData?.highWork?.height || ""} m</td>
+                            <td>{formData?.workHeight || ""} m</td>
                             <td style={{ fontWeight: "bold" }}>작업플랫폼</td>
-                            <td>{formData?.highWork?.platform || ""}</td>
-                          </tr>
-                          <tr>
-                            <td style={{ fontWeight: "bold" }}>안전대 착용</td>
-                            <td>{formData?.highWork?.harness ? "✓ 착용" : "미착용"}</td>
-                            <td style={{ fontWeight: "bold" }}>안전난간 설치</td>
-                            <td>{formData?.highWork?.guardrail ? "✓ 설치" : "미설치"}</td>
+                            <td>{formData?.platform || ""}</td>
                           </tr>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>날씨상태</td>
-                            <td>{formData?.highWork?.weather || ""}</td>
+                            <td>{formData?.weather || ""}</td>
                             <td style={{ fontWeight: "bold" }}>풍속</td>
-                            <td>{formData?.highWork?.windSpeed || ""} m/s</td>
+                            <td>{formData?.windSpeed || ""} m/s</td>
                           </tr>
                         </tbody>
                       </table>
+                      <div style={{ marginTop: "15px" }}>
+                        <strong>작업 완료 후 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.completion?.equipmentStorage && <div>• 공구, 자재 등 정리정돈</div>}
+                          {formData?.completion?.fallPrevention && <div>• 상부에서 물건 낙하방지 조치</div>}
+                          {formData?.completion?.siteCleanup && <div>• 작업장 주변 정리</div>}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -647,28 +691,47 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 굴착작업 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 전 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.buriedPipes && <div>• 매설배관 위치 파악 완료</div>}
+                          {formData?.preWork?.siteCondition && <div>• 작업장 지반상태 확인 완료</div>}
+                          {formData?.preWork?.collapsePrevention && <div>• 붕괴방지 개천판 설치</div>}
+                          {formData?.preWork?.accessControl && <div>• 작업장 근처 통행제한 조치</div>}
+                          {formData?.preWork?.weatherPrevention && <div>• 기후조건(비, 눈)에 따른 붕괴방지 조치</div>}
+                          {formData?.preWork?.buriedProtection && <div>• 매설배관 보호조치</div>}
+                          {formData?.preWork?.structureProtection && <div>• 건물, 구조물 근처 보호조치</div>}
+                          {formData?.preWork?.slopeProtection && <div>• 굴착면 경사면 및 사면 붕괴방지 조치</div>}
+                          {formData?.preWork?.passageInstallation && <div>• 굴착장소 통로설치</div>}
+                          {formData?.preWork?.materialStorage && <div>• 굴착토사, 자재 적치장소 확보</div>}
+                          {formData?.preWork?.perimeter && <div>• 굴착장소 주변 가설펜스</div>}
+                        </div>
+                      </div>
                       <table className="print-table">
                         <tbody>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>굴착깊이</td>
-                            <td>{formData?.excavation?.depth || ""} m</td>
+                            <td>{formData?.excavationDepth || ""} m</td>
                             <td style={{ fontWeight: "bold" }}>굴착폭</td>
-                            <td>{formData?.excavation?.width || ""} m</td>
+                            <td>{formData?.excavationWidth || ""} m</td>
                           </tr>
                           <tr>
-                            <td style={{ fontWeight: "bold" }}>지하매설물 확인</td>
-                            <td>{formData?.excavation?.utilityCheck ? "✓ 확인" : "미확인"}</td>
-                            <td style={{ fontWeight: "bold" }}>흙막이 설치</td>
-                            <td>{formData?.excavation?.shoring ? "✓ 설치" : "미설치"}</td>
+                            <td style={{ fontWeight: "bold" }}>굴착방법</td>
+                            <td colSpan={3}>{formData?.excavationMethod || ""}</td>
                           </tr>
                           <tr>
-                            <td style={{ fontWeight: "bold" }}>경사면 안정성</td>
-                            <td>{formData?.excavation?.slopeStability || ""}</td>
-                            <td style={{ fontWeight: "bold" }}>배수조치</td>
-                            <td>{formData?.excavation?.drainage ? "✓ 완료" : "미완료"}</td>
+                            <td style={{ fontWeight: "bold" }}>지하매설물</td>
+                            <td colSpan={3}>{formData?.undergroundUtilities || ""}</td>
                           </tr>
                         </tbody>
                       </table>
+                      <div style={{ marginTop: "15px" }}>
+                        <strong>작업 완료 후 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.completion?.backfill && <div>• 되메우기 완료</div>}
+                          {formData?.completion?.cleanup && <div>• 주변 정리정돈</div>}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -680,28 +743,77 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 중장비 작업 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>공통 안전조치:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.operatorQualification && <div>• 운전자격 확인</div>}
+                          {formData?.preWork?.signalPerson && <div>• 신호수 배치</div>}
+                          {formData?.preWork?.routeCheck && <div>• 이동경로 확인</div>}
+                          {formData?.preWork?.supervisorGuide && <div>• 작업지휘자(감독자) 유도</div>}
+                          {formData?.preWork?.parkingPrevention && <div>• 야간 또는 작업종료 시 사면 주차방지 조치</div>}
+                        </div>
+                      </div>
+                      
+                      {formData?.preWork?.forkliftSafety && (
+                        <div style={{ marginBottom: "15px" }}>
+                          <strong>지게차:</strong>
+                          <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                            <div>• 류트 및 포크 착탈방지 장치 설치</div>
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>크레인 안전조치:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.craneOperator && <div>• 크레인 조종사 자격증 확인</div>}
+                          {formData?.preWork?.ratedLoad && <div>• 정격하중 표시</div>}
+                          {formData?.preWork?.safetyDevices && <div>• 안전장치 이상 유무 확인</div>}
+                          {formData?.preWork?.hookDevice && <div>• 후크 해지장치 확인</div>}
+                          {formData?.preWork?.weatherCondition && <div>• 기상조건(풍속, 비, 눈, 안개) 확인</div>}
+                          {formData?.preWork?.safetyInspection && <div>• 크레인 안전검사 여부</div>}
+                          {formData?.preWork?.workSupervisor && <div>• 작업지휘자(감독자) 배치</div>}
+                          {formData?.preWork?.slingEquipment && <div>• 슬링기구의 안전계수 확인</div>}
+                          {formData?.preWork?.craneGround && <div>• 크레인의 설치면 및 지반 상태확인</div>}
+                          {formData?.preWork?.craneProhibition && <div>• 크레인 작업반경 내 다른 작업금지</div>}
+                          {formData?.preWork?.hoistStopper && <div>• 호이스트크레인의 레일스토퍼 및 차량계 확인</div>}
+                        </div>
+                      </div>
+                      
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>간트리크레인 안전조치:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.supportRisk && <div>• 지지대 위험성 유무</div>}
+                          {formData?.preWork?.loadAppropriateness && <div>• 하중물 미끌림 및 적정하중 여부</div>}
+                          {formData?.preWork?.chainDamage && <div>• 체인, 와이어로프 손상 여부</div>}
+                          {formData?.preWork?.gantryStopper && <div>• 간트리크레인 과부하방지장치</div>}
+                        </div>
+                      </div>
+                      
                       <table className="print-table">
                         <tbody>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>장비종류</td>
-                            <td>{formData?.heavyEquipment?.equipmentType || ""}</td>
+                            <td>{formData?.equipmentType || ""}</td>
                             <td style={{ fontWeight: "bold" }}>장비번호</td>
-                            <td>{formData?.heavyEquipment?.equipmentNumber || ""}</td>
+                            <td>{formData?.equipmentNumber || ""}</td>
                           </tr>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>운전자</td>
-                            <td>{formData?.heavyEquipment?.operator || ""}</td>
-                            <td style={{ fontWeight: "bold" }}>자격증 확인</td>
-                            <td>{formData?.heavyEquipment?.licenseCheck ? "✓ 확인" : "미확인"}</td>
-                          </tr>
-                          <tr>
-                            <td style={{ fontWeight: "bold" }}>신호수 배치</td>
-                            <td>{formData?.heavyEquipment?.signalPerson || ""}</td>
-                            <td style={{ fontWeight: "bold" }}>작업반경 통제</td>
-                            <td>{formData?.heavyEquipment?.areaControl ? "✓ 통제" : "미통제"}</td>
+                            <td>{formData?.operatorName || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>신호수</td>
+                            <td>{formData?.signalPersonName || ""}</td>
                           </tr>
                         </tbody>
                       </table>
+                      
+                      <div style={{ marginTop: "15px" }}>
+                        <strong>작업 완료 후 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.completion?.fallPrevention && <div>• 공구, 자재 등 낝하방지 조치</div>}
+                          {formData?.completion?.siteCleanup && <div>• 작업장 주변 정리</div>}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -713,28 +825,56 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 전기작업 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 전 - 정전작업:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.switchCutoff && <div>• 스위치 차단 및 LOTO 체결 완료</div>}
+                          {formData?.preWork?.powerCheck && <div>• 테스터기를 활용한 정전상태 확인</div>}
+                          {formData?.preWork?.residualCharge && <div>• 검전기 등을 통한 잔류전하 확인</div>}
+                          {formData?.preWork?.discharge && <div>• 방전기구를 활용한 방전</div>}
+                          {formData?.preWork?.safetyDevice && <div>• 활선경보기 등 안전장치 착용</div>}
+                        </div>
+                      </div>
+                      
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 중 - 활선작업:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.approachDistance && <div>• 충전부 접근금지 거리 준수</div>}
+                          {formData?.preWork?.liveWorkTools && <div>• 활선작업용 기구 사용</div>}
+                          {formData?.preWork?.qualifiedWorker && <div>• 자격보유자 작업 시행</div>}
+                        </div>
+                      </div>
+                      
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>기타 안전조치:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.grounding && <div>• 충분한 접지 실시</div>}
+                          {formData?.preWork?.accessProhibition && <div>• 비관계자 출입금지</div>}
+                        </div>
+                      </div>
+                      
                       <table className="print-table">
                         <tbody>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>전압</td>
-                            <td>{formData?.electrical?.voltage || ""} V</td>
+                            <td>{formData?.voltage || ""} V</td>
                             <td style={{ fontWeight: "bold" }}>차단기 위치</td>
-                            <td>{formData?.electrical?.breakerLocation || ""}</td>
+                            <td>{formData?.breakerLocation || ""}</td>
                           </tr>
                           <tr>
-                            <td style={{ fontWeight: "bold" }}>LOTO 시행</td>
-                            <td>{formData?.electrical?.loto ? "✓ 시행" : "미시행"}</td>
-                            <td style={{ fontWeight: "bold" }}>검전기 확인</td>
-                            <td>{formData?.electrical?.voltageTest ? "✓ 확인" : "미확인"}</td>
-                          </tr>
-                          <tr>
-                            <td style={{ fontWeight: "bold" }}>절연장갑 착용</td>
-                            <td>{formData?.electrical?.insulatedGloves ? "✓ 착용" : "미착용"}</td>
-                            <td style={{ fontWeight: "bold" }}>접지 설치</td>
-                            <td>{formData?.electrical?.grounding ? "✓ 설치" : "미설치"}</td>
+                            <td style={{ fontWeight: "bold" }}>작업장비</td>
+                            <td colSpan={3}>{formData?.equipment || ""}</td>
                           </tr>
                         </tbody>
                       </table>
+                      
+                      <div style={{ marginTop: "15px" }}>
+                        <strong>작업 완료 후:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.completion?.breakerRecovery && <div>• 누전차단기 투입 획복 조치</div>}
+                          {formData?.completion?.siteCleanup && <div>• 주변 정리정돈</div>}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
@@ -746,28 +886,41 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                   <div className="print-section">
                     <div className="print-section-header">2. 방사선 작업 안전점검</div>
                     <div className="print-section-content">
+                      <div style={{ marginBottom: "15px" }}>
+                        <strong>작업 전 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.preWork?.radiationSafety && <div>• 방사선 안전관리 측정 완료</div>}
+                          {formData?.preWork?.dosimeter && <div>• 개인선량계 착용</div>}
+                          {formData?.preWork?.shielding && <div>• 차폐조치 설치</div>}
+                          {formData?.preWork?.controlledArea && <div>• 관리구역 설정</div>}
+                          {formData?.preWork?.warningSign && <div>• 경고표지 부착</div>}
+                        </div>
+                      </div>
+                      
                       <table className="print-table">
                         <tbody>
                           <tr>
                             <td style={{ fontWeight: "bold" }}>방사선원</td>
-                            <td>{formData?.radiation?.source || ""}</td>
+                            <td>{formData?.radiationSource || ""}</td>
                             <td style={{ fontWeight: "bold" }}>선량률</td>
-                            <td>{formData?.radiation?.doseRate || ""} mSv/h</td>
+                            <td>{formData?.doseRate || ""} mSv/h</td>
                           </tr>
                           <tr>
-                            <td style={{ fontWeight: "bold" }}>개인선량계 착용</td>
-                            <td>{formData?.radiation?.dosimeter ? "✓ 착용" : "미착용"}</td>
-                            <td style={{ fontWeight: "bold" }}>차폐조치</td>
-                            <td>{formData?.radiation?.shielding ? "✓ 설치" : "미설치"}</td>
-                          </tr>
-                          <tr>
-                            <td style={{ fontWeight: "bold" }}>관리구역 설정</td>
-                            <td>{formData?.radiation?.controlledArea ? "✓ 설정" : "미설정"}</td>
                             <td style={{ fontWeight: "bold" }}>방사선관리자</td>
-                            <td>{formData?.radiation?.radiationOfficer || ""}</td>
+                            <td>{formData?.radiationOfficer || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>작업시간</td>
+                            <td>{formData?.workDuration || ""}</td>
                           </tr>
                         </tbody>
                       </table>
+                      
+                      <div style={{ marginTop: "15px" }}>
+                        <strong>작업 완료 후 점검사항:</strong>
+                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
+                          {formData?.completion?.radiationCheck && <div>• 방사선 선량 측정 완료</div>}
+                          {formData?.completion?.cleanup && <div>• 작업장 정리 완료</div>}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
