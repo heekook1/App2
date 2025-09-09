@@ -33,40 +33,64 @@ export default function PermitViewPage() {
   const [permit, setPermit] = useState<Permit | null>(null)
   const [comments, setComments] = useState("")
   const [isProcessing, setIsProcessing] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (params.id) {
-      // Always try permitStore first (it has the complete data with approvers)
-      const foundPermit = permitStore.getById(params.id as string)
-      if (foundPermit) {
-        setPermit(foundPermit)
-      } else {
-        // Fallback to localStorageUtils for old data
-        const storedPermit = localStorageUtils.getPermitById(params.id as string)
-        if (storedPermit) {
-          // Convert StoredPermit to Permit format
-          const permit: Permit = {
-            id: storedPermit.id,
-            type: storedPermit.type as "general" | "fire" | "supplementary",
-            title: storedPermit.title,
-            requester: {
-              name: storedPermit.requester.name,
-              department: storedPermit.requester.department,
-              email: storedPermit.requester.email || "user@company.com",
-            },
-            createdAt: storedPermit.createdAt,
-            status: storedPermit.status as "draft" | "pending" | "in-progress" | "approved" | "rejected",
-            currentApproverIndex: 0,
-            approvers: [],
-            data: storedPermit.data,
+    const loadPermit = async () => {
+      if (params.id) {
+        try {
+          setLoading(true)
+          // Try to get permit from Supabase
+          const foundPermit = await permitStore.getById(params.id as string)
+          if (foundPermit) {
+            setPermit(foundPermit)
+          } else {
+            // Fallback to localStorageUtils for old data
+            const storedPermit = localStorageUtils.getPermitById(params.id as string)
+            if (storedPermit) {
+              // Convert StoredPermit to Permit format
+              const permit: Permit = {
+                id: storedPermit.id,
+                type: storedPermit.type as "general" | "fire" | "supplementary",
+                title: storedPermit.title,
+                requester: {
+                  name: storedPermit.requester.name,
+                  department: storedPermit.requester.department,
+                  email: storedPermit.requester.email || "user@company.com",
+                },
+                createdAt: storedPermit.createdAt,
+                status: storedPermit.status as "draft" | "pending" | "in-progress" | "approved" | "rejected",
+                currentApproverIndex: 0,
+                approvers: [],
+                data: storedPermit.data,
+              }
+              setPermit(permit)
+            } else {
+              setPermit(null)
+            }
           }
-          setPermit(permit)
-        } else {
+        } catch (error) {
+          console.error('Error loading permit:', error)
           setPermit(null)
+        } finally {
+          setLoading(false)
         }
       }
     }
+
+    loadPermit()
   }, [params.id])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-muted-foreground">허가서를 불러오는 중...</p>
+        </div>
+      </div>
+    )
+  }
 
   if (!permit) {
     return (
@@ -93,19 +117,26 @@ export default function PermitViewPage() {
     if (!user) return
     setIsProcessing(true)
 
-    const success = permitStore.approve(permit.id, user.email, comments)
-    if (success) {
-      // Log activity
-      userStore.logActivity(user.id, 'approve_permit', `허가서 승인: ${permit.title}`)
-      
-      // Simulate email notification
-      console.log(`Email sent to next approver or requester about approval`)
-      alert("승인이 완료되었습니다.")
+    try {
+      const success = await permitStore.approve(permit.id, user.email, comments)
+      if (success) {
+        // Log activity
+        await userStore.logActivity(user.id, 'approve_permit', `허가서 승인: ${permit.title}`)
+        
+        // Simulate email notification
+        console.log(`Email sent to next approver or requester about approval`)
+        alert("승인이 완료되었습니다.")
 
-      // Refresh permit data
-      const updatedPermit = permitStore.getById(permit.id)
-      setPermit(updatedPermit || null)
-      setComments("")
+        // Refresh permit data
+        const updatedPermit = await permitStore.getById(permit.id)
+        setPermit(updatedPermit || null)
+        setComments("")
+      } else {
+        alert("승인 처리 중 오류가 발생했습니다.")
+      }
+    } catch (error) {
+      console.error('Error approving permit:', error)
+      alert("승인 처리 중 오류가 발생했습니다.")
     }
 
     setIsProcessing(false)
@@ -119,19 +150,26 @@ export default function PermitViewPage() {
 
     setIsProcessing(true)
 
-    const success = permitStore.reject(permit.id, user.email, comments)
-    if (success) {
-      // Log activity
-      userStore.logActivity(user.id, 'reject_permit', `허가서 반려: ${permit.title} - ${comments}`)
-      
-      // Simulate email notification
-      console.log(`Email sent to requester about rejection: ${comments}`)
-      alert("반려가 완료되었습니다.")
+    try {
+      const success = await permitStore.reject(permit.id, user.email, comments)
+      if (success) {
+        // Log activity
+        await userStore.logActivity(user.id, 'reject_permit', `허가서 반려: ${permit.title} - ${comments}`)
+        
+        // Simulate email notification
+        console.log(`Email sent to requester about rejection: ${comments}`)
+        alert("반려가 완료되었습니다.")
 
-      // Refresh permit data
-      const updatedPermit = permitStore.getById(permit.id)
-      setPermit(updatedPermit || null)
-      setComments("")
+        // Refresh permit data
+        const updatedPermit = await permitStore.getById(permit.id)
+        setPermit(updatedPermit || null)
+        setComments("")
+      } else {
+        alert("반려 처리 중 오류가 발생했습니다.")
+      }
+    } catch (error) {
+      console.error('Error rejecting permit:', error)
+      alert("반려 처리 중 오류가 발생했습니다.")
     }
 
     setIsProcessing(false)
