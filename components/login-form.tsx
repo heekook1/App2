@@ -97,16 +97,6 @@ export function LoginForm() {
               )}
             </Button>
           </form>
-          <div className="mt-6 p-4 bg-muted rounded-lg">
-            <p className="text-sm font-medium text-muted-foreground mb-2">테스트 계정:</p>
-            <div className="text-xs space-y-1 text-muted-foreground">
-              <div>관리자: admin / admin123</div>
-              <div>작업자: worker01 / worker123</div>
-              <div>승인자: approver01 / approver123</div>
-              <div>팀장: approver02 / team123</div>
-              <div>안전관리자: safety01 / safety123</div>
-            </div>
-          </div>
         </CardContent>
       </Card>
     </div>
