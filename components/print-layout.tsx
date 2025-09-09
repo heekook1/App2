@@ -562,7 +562,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
               </div>
 
               {/* 밀폐공간 작업 */}
-              {permitType === "confined-space" && (
+              {permitType === "밀폐공간출입" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 밀폐공간 안전점검</div>
@@ -570,14 +570,14 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.oxygenLevel ? 'checked' : ''}`}></span> 산소농도 측정 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.gasCheck ? 'checked' : ''}`}></span> 가연성가스 측정 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.ventilation ? 'checked' : ''}`}></span> 환기장치 설치 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.rescueEquipment ? 'checked' : ''}`}></span> 구조장비 준비 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.communicationDevice ? 'checked' : ''}`}></span> 통신장비 확인 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.accessControl ? 'checked' : ''}`}></span> 출입통제 조치 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.watcher ? 'checked' : ''}`}></span> 감시자 배치 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.emergencyPlan ? 'checked' : ''}`}></span> 비상계획 수립 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.gasConcentrationMeasurement ? 'checked' : ''}`}></span> 가스농도 측정 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.ventilationSystem ? 'checked' : ''}`}></span> 환기장치 설치 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.emergencyEquipment ? 'checked' : ''}`}></span> 구조장비 준비 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.respiratoryProtection ? 'checked' : ''}`}></span> 호흡보호구 착용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.entryProhibitionSign ? 'checked' : ''}`}></span> 출입금지 표시</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.supervisorAssignment ? 'checked' : ''}`}></span> 감시자 배치 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.protectionGuidance ? 'checked' : ''}`}></span> 보호구 착용지도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["밀폐공간출입"]?.preWork?.explosionProofEquipment ? 'checked' : ''}`}></span> 방폭기구 사용</div>
                         </div>
                       </div>
                       <table className="print-table">
@@ -738,7 +738,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
               )}
 
               {/* 중장비 작업 */}
-              {permitType === "heavy-equipment" && (
+              {permitType === "차량계 건설기계 중장비 사용" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 중장비 작업 안전점검</div>
@@ -746,47 +746,14 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>공통 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.operatorQualification ? 'checked' : ''}`}></span> 운전자격 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.signalPerson ? 'checked' : ''}`}></span> 신호수 배치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.routeCheck ? 'checked' : ''}`}></span> 이동경로 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.supervisorGuide ? 'checked' : ''}`}></span> 작업지휘자(감독자) 유도</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.parkingPrevention ? 'checked' : ''}`}></span> 야간 또는 작업종료 시 사면 주차방지 조치</div>
-                        </div>
-                      </div>
-                      
-                      {formData?.preWork?.forkliftSafety && (
-                        <div style={{ marginBottom: "15px" }}>
-                          <strong>지게차:</strong>
-                          <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                            <div>• 류트 및 포크 착탈방지 장치 설치</div>
-                          </div>
-                        </div>
-                      )}
-                      
-                      <div style={{ marginBottom: "15px" }}>
-                        <strong>크레인 안전조치:</strong>
-                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneOperator ? 'checked' : ''}`}></span> 크레인 조종사 자격증 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.ratedLoad ? 'checked' : ''}`}></span> 정격하중 표시</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyDevices ? 'checked' : ''}`}></span> 안전장치 이상 유무 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.hookDevice ? 'checked' : ''}`}></span> 후크 해지장치 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.weatherCondition ? 'checked' : ''}`}></span> 기상조건(풍속, 비, 눈, 안개) 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyInspection ? 'checked' : ''}`}></span> 크레인 안전검사 여부</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.workSupervisor ? 'checked' : ''}`}></span> 작업지휘자(감독자) 배치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.slingEquipment ? 'checked' : ''}`}></span> 슬링기구의 안전계수 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneGround ? 'checked' : ''}`}></span> 크레인의 설치면 및 지반 상태확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneProhibition ? 'checked' : ''}`}></span> 크레인 작업반경 내 다른 작업금지</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.hoistStopper ? 'checked' : ''}`}></span> 호이스트크레인의 레일스토퍼 및 차량계 확인</div>
-                        </div>
-                      </div>
-                      
-                      <div style={{ marginBottom: "15px" }}>
-                        <strong>간트리크레인 안전조치:</strong>
-                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.supportRisk ? 'checked' : ''}`}></span> 지지대 위험성 유무</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.loadAppropriateness ? 'checked' : ''}`}></span> 하중물 미끄러짐 및 적정하중 여부</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.chainDamage ? 'checked' : ''}`}></span> 체인, 와이어로프 손상 여부</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.gantryStopper ? 'checked' : ''}`}></span> 간트리크레인 과부하방지장치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.operatorLicense ? 'checked' : ''}`}></span> 운전자격 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.leaderSupport ? 'checked' : ''}`}></span> 지휘자 유도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.supervisorGuide ? 'checked' : ''}`}></span> 작업지휘자(감독자) 유도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.headGuard ? 'checked' : ''}`}></span> 헤드가드 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.wheelChock ? 'checked' : ''}`}></span> 휠 고임목 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.winchBrake ? 'checked' : ''}`}></span> 윈치브레이크 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.pulleyLoad ? 'checked' : ''}`}></span> 도르래 하중 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.hydraulicSystem ? 'checked' : ''}`}></span> 유압시스템 점검</div>
                         </div>
                       </div>
                       
@@ -806,14 +773,6 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                           </tr>
                         </tbody>
                       </table>
-                      
-                      <div style={{ marginTop: "15px" }}>
-                        <strong>작업 완료 후 점검사항:</strong>
-                        <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.fallPrevention ? 'checked' : ''}`}></span> 공구, 자재 등 낙하방지 조치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.siteCleanup ? 'checked' : ''}`}></span> 작업장 주변 정리</div>
-                        </div>
-                      </div>
                     </div>
                   </div>
                 </>
@@ -966,18 +925,18 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
 // 보충작업허가서 유형별 제목 가져오기
 function getSupplementaryPermitTitle(type: string) {
   switch (type) {
-    case "confined-space":
-      return "밀폐공간 작업"
-    case "high-work":
+    case "밀폐공간출입":
+      return "밀폐공간출입"
+    case "차량계 건설기계 중장비 사용":
+      return "차량계 건설기계 중장비 사용"
+    case "고소작업":
       return "고소작업"
-    case "excavation":
+    case "굴착작업":
       return "굴착작업"
-    case "heavy-equipment":
-      return "중장비 작업"
-    case "electrical":
+    case "전기작업":
       return "전기작업"
-    case "radiation":
-      return "방사선 작업"
+    case "방사선작업":
+      return "방사선작업"
     default:
       return type
   }
