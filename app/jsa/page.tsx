@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Plus, Trash2, ArrowLeft, Save, FileText, Printer } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { jsaStore, type JSAData, type JSAStep } from "@/lib/jsa-store"
+import AIChat from "@/components/ai-chat"
 
 
 export default function JSAPage() {
@@ -456,6 +457,12 @@ export default function JSAPage() {
                   </div>
                 </div>
               ))}
+            </div>
+
+            {/* AI 채팅 도우미 */}
+            <div className="mt-8 print:hidden">
+              <h3 className="text-lg font-medium mb-4">AI 작업 안전 도우미</h3>
+              <AIChat />
             </div>
           </CardContent>
         </Card>
