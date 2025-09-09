@@ -40,7 +40,35 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
 
     try {
-      // For now, use simple authentication with hardcoded users since Supabase auth is not set up
+      // First try to get user from Supabase
+      const supabaseUser = await userStore.getByUsername(username)
+      
+      if (supabaseUser) {
+        // For now, use simple password check with default passwords
+        // In a real app, you'd use proper password hashing
+        const defaultPasswords: Record<string, string> = {
+          'admin': 'admin123',
+          'worker01': 'worker123', 
+          'field': 'field123',
+          'manager': 'manager123',
+          'safety': 'safety123'
+        }
+        
+        const expectedPassword = defaultPasswords[username] || 'user123'
+        
+        if (password === expectedPassword) {
+          setUser(supabaseUser)
+          localStorage.setItem("user", JSON.stringify(supabaseUser))
+          
+          // Log login activity to Supabase
+          await userStore.updateLastLogin(supabaseUser.id)
+          
+          setIsLoading(false)
+          return true
+        }
+      }
+      
+      // Fallback to hardcoded users for backwards compatibility
       const mockUsers = [
         { username: "admin", password: "admin123", id: "1", email: "admin@company.com", name: "김관리자", department: "안전관리팀", role: "admin" as const },
         { username: "worker01", password: "worker123", id: "2", email: "worker@company.com", name: "이작업자", department: "정비기술팀", role: "user" as const },
@@ -53,9 +81,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         const { password: _, ...userWithoutPassword } = mockUser
         setUser(userWithoutPassword)
         localStorage.setItem("user", JSON.stringify(userWithoutPassword))
-        
-        // Log login activity to Supabase
-        await userStore.updateLastLogin(mockUser.id)
         
         setIsLoading(false)
         return true
