@@ -20,9 +20,9 @@ import {
   Printer,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
-import { permitStore, type Permit } from "@/lib/permit-store"
+import { permitStore, type Permit } from "@/lib/permit-store-supabase"
 import { localStorageUtils } from "@/lib/local-storage"
-import { userStore } from "@/lib/user-store"
+import { userStore } from "@/lib/user-store-supabase"
 import { PrintLayout } from "@/components/print-layout"
 import { generatePermitPDF, printPermit } from "@/lib/pdf-utils"
 

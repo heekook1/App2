@@ -65,9 +65,9 @@ export default function ApproverSelector({ approvers, onApproverChange }: Approv
                 </SelectTrigger>
                 <SelectContent>
                   {loading ? (
-                    <SelectItem value="" disabled>사용자를 불러오는 중...</SelectItem>
+                    <SelectItem value="__loading__" disabled>사용자를 불러오는 중...</SelectItem>
                   ) : users.length === 0 ? (
-                    <SelectItem value="" disabled>사용가능한 승인자가 없습니다</SelectItem>
+                    <SelectItem value="__empty__" disabled>사용가능한 승인자가 없습니다</SelectItem>
                   ) : (
                     users.map((user) => (
                       <SelectItem key={user.id} value={user.username}>

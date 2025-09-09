@@ -18,7 +18,7 @@ import PrintButton from "@/components/print-button"
 import GlobalPrintStyles from "@/components/global-print-styles"
 import { localStorageUtils, type StoredPermit } from "@/lib/local-storage"
 import { permitStore } from "@/lib/permit-store-supabase"
-import { userStore } from "@/lib/user-store"
+import { userStore } from "@/lib/user-store-supabase"
 
 interface GeneralRiskPermitData {
   // 기본정보
