@@ -148,7 +148,7 @@ export default function UserManagementPage() {
         name: formData.name,
         department: formData.department,
         role: formData.role
-      })
+      }, formData.password || 'user123') // Pass password to create function
 
       if (createdUser) {
         setIsCreateDialogOpen(false)

@@ -14,6 +14,10 @@ export interface User {
   updatedAt: string
 }
 
+export interface UserWithPassword extends User {
+  password: string
+}
+
 export interface UserActivity {
   id: string
   userId: string
@@ -139,8 +143,33 @@ export const userStore = {
     }
   },
 
+  // Get user by username with password for authentication
+  getUserForAuth: async (username: string): Promise<UserWithPassword | null> => {
+    try {
+      const { data: user, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('username', username)
+        .single()
+
+      if (error) {
+        console.error('Error fetching user for auth:', error)
+        return null
+      }
+
+      const baseUser = convertDatabaseUserToUser(user)
+      return {
+        ...baseUser,
+        password: user.password || 'user123'
+      }
+    } catch (error) {
+      console.error('Error in getUserForAuth:', error)
+      return null
+    }
+  },
+
   // Create user
-  create: async (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>): Promise<User | null> => {
+  create: async (userData: Omit<User, 'id' | 'createdAt' | 'updatedAt'>, password?: string): Promise<User | null> => {
     try {
       // Convert user data but exclude the id field to let database generate it
       const { id, ...dbUserWithoutId } = convertUserToDatabaseUser({
@@ -148,9 +177,15 @@ export const userStore = {
         id: '' // This will be excluded anyway
       })
 
+      // Add password if provided, otherwise use default
+      const dataWithPassword = {
+        ...dbUserWithoutId,
+        password: password || 'user123'
+      }
+
       const { data: createdUser, error } = await supabase
         .from('users')
-        .insert(dbUserWithoutId)
+        .insert(dataWithPassword)
         .select()
         .single()
 

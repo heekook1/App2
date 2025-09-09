@@ -40,32 +40,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(true)
 
     try {
-      // First try to get user from Supabase
-      const supabaseUser = await userStore.getByUsername(username)
+      // Try to get user from Supabase with password
+      const supabaseUser = await userStore.getUserForAuth(username)
       
-      if (supabaseUser) {
-        // For now, use simple password check with default passwords
-        // In a real app, you'd use proper password hashing
-        const defaultPasswords: Record<string, string> = {
-          'admin': 'admin123',
-          'worker01': 'worker123', 
-          'field': 'field123',
-          'manager': 'manager123',
-          'safety': 'safety123'
-        }
+      if (supabaseUser && supabaseUser.password === password) {
+        // Remove password from user object before storing
+        const { password: _, ...userWithoutPassword } = supabaseUser
+        setUser(userWithoutPassword)
+        localStorage.setItem("user", JSON.stringify(userWithoutPassword))
         
-        const expectedPassword = defaultPasswords[username] || 'user123'
+        // Log login activity to Supabase
+        await userStore.updateLastLogin(supabaseUser.id)
         
-        if (password === expectedPassword) {
-          setUser(supabaseUser)
-          localStorage.setItem("user", JSON.stringify(supabaseUser))
-          
-          // Log login activity to Supabase
-          await userStore.updateLastLogin(supabaseUser.id)
-          
-          setIsLoading(false)
-          return true
-        }
+        setIsLoading(false)
+        return true
       }
       
       // Fallback to hardcoded users for backwards compatibility
