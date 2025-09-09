@@ -50,7 +50,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
 
   return (
     <div className="print-layout hidden print:block">
-      <style jsx>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media print {
           .print-layout {
             display: block !important;
@@ -177,7 +177,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
             padding: 8px;
           }
         }
-      `}</style>
+      `}} />
 
       <div className="print-header">
         <div className="print-title">{getTypeLabel(permit.type)}</div>
