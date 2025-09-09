@@ -116,12 +116,12 @@ function Dashboard() {
       <header className="border-b bg-card shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 relative">
+            <div className="w-24 h-24 relative">
               <Image
                 src="/logo.png"
                 alt="Company Logo"
-                width={48}
-                height={48}
+                width={96}
+                height={96}
                 className="object-contain"
               />
             </div>
