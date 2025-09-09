@@ -28,22 +28,23 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // MISO 워크플로우 형식에 맞게 요청 구성
+    // MISO 에이전트/챗플로우 형식에 맞게 요청 구성
     const requestBody = {
-      inputs: {
-        user_message: message,
-        context: `당신은 산업 안전 전문가입니다. 작업 위험성 평가(JSA) 작성을 도와주세요.
-        다음과 같은 관점에서 도움을 제공해주세요:
-        1. 작업 단계별 잠재적 위험 요소 파악
-        2. 위험 요소에 대한 예방 대책 제시
-        3. 필요한 보호구 및 안전 장비 추천
-        4. 관련 안전 규정 및 절차 안내
-        한국어로 명확하고 실용적인 답변을 제공해주세요.`
-      },
-      streaming: false // 일단 스트리밍 비활성화로 테스트
+      inputs: {}, // 앱에서 정의된 변수들 (비어있어도 됨)
+      query: `${message}
+
+[안전 전문가로서 답변해주세요]
+- 작업 단계별 잠재적 위험 요소 파악
+- 위험 요소에 대한 예방 대책 제시  
+- 필요한 보호구 및 안전 장비 추천
+- 관련 안전 규정 및 절차 안내
+- 한국어로 명확하고 실용적인 답변 제공`,
+      mode: "blocking", // blocking 모드로 테스트
+      user: "jsa-user-" + Date.now(), // 고유 사용자 식별자
+      conversation_id: "" // 새 대화
     }
 
-    const apiUrl = `${MISO_API_URL}/workflows/run`
+    const apiUrl = `${MISO_API_URL}/chat`
     console.log("🚀 Sending request to MISO API...")
     console.log("URL:", apiUrl)
     console.log("Request Body:", JSON.stringify(requestBody, null, 2))
@@ -102,24 +103,23 @@ export async function POST(request: NextRequest) {
       )
     }
     
-    // MISO 워크플로우 응답 형식에 맞게 처리
-    // 워크플로우 응답은 보통 data.outputs 또는 data.data.outputs에 있음
+    // MISO 채팅 API 응답 형식에 맞게 처리
     let aiResponse = "응답을 생성할 수 없습니다."
     
-    if (data.data?.outputs?.result) {
-      aiResponse = data.data.outputs.result
-    } else if (data.outputs?.result) {
-      aiResponse = data.outputs.result
-    } else if (data.data?.outputs?.response) {
-      aiResponse = data.data.outputs.response
-    } else if (data.outputs?.response) {
-      aiResponse = data.outputs.response
-    } else if (data.result) {
-      aiResponse = data.result
-    } else if (data.response) {
-      aiResponse = data.response
+    // blocking 모드 응답에서 answer 필드를 찾음
+    if (data.answer) {
+      aiResponse = data.answer
     } else if (data.message) {
       aiResponse = data.message
+    } else if (data.response) {
+      aiResponse = data.response
+    } else if (data.content) {
+      aiResponse = data.content
+    } else if (data.text) {
+      aiResponse = data.text
+    } else {
+      // 응답 구조를 로그로 확인
+      console.log("⚠️ Unknown response structure, checking all fields:", Object.keys(data))
     }
 
     console.log("🎯 Final AI Response:", aiResponse)
