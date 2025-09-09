@@ -115,8 +115,8 @@ function Dashboard() {
       {/* Header */}
       <header className="border-b bg-card shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div className="w-24 h-24 relative">
+          <div className="flex items-center space-x-4">
+            <div className="w-24 h-24 relative flex items-center justify-center">
               <Image
                 src="/logo.png"
                 alt="Company Logo"
@@ -125,7 +125,7 @@ function Dashboard() {
                 className="object-contain"
               />
             </div>
-            <div>
+            <div className="flex flex-col justify-center">
               <h1 className="text-xl font-bold text-foreground">안전작업허가서 시스템</h1>
               <p className="text-sm text-muted-foreground">안전한 작업을 위한 전산화 결재시스템</p>
             </div>

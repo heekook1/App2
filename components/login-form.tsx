@@ -36,8 +36,8 @@ export function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center space-y-3">
-          <div className="mx-auto w-40 h-40 relative">
+        <CardHeader className="text-center space-y-3 pt-8">
+          <div className="mx-auto w-40 h-40 relative mt-6">
             <Image
               src="/logo.png"
               alt="Company Logo"
