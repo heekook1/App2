@@ -525,6 +525,307 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
         <div>작업허가서 시스템 - 안전한 작업을 위한 전산화 결재시스템</div>
         <div>출력일시: {new Date().toLocaleString("ko-KR")}</div>
       </div>
+
+      {/* 보충작업허가서가 있는 경우 페이지 구분 후 출력 */}
+      {formData?.supplementaryPermitType && formData.supplementaryPermitType.length > 0 && (
+        <>
+          <div style={{ pageBreakBefore: "always" }}></div>
+          {formData.supplementaryPermitType.map((permitType: string) => (
+            <div key={permitType} style={{ pageBreakBefore: permitType !== formData.supplementaryPermitType[0] ? "always" : "auto" }}>
+              <div className="print-header">
+                <div className="print-title">보충작업허가서 - {getSupplementaryPermitTitle(permitType)}</div>
+                <div className="print-subtitle">Supplementary Work Permit</div>
+                <div>허가서 번호: {permit.id}-SUP</div>
+                <div>상태: {getStatusText(permit.status)}</div>
+              </div>
+
+              <div className="print-section">
+                <div className="print-section-header">1. 기본정보</div>
+                <div className="print-section-content">
+                  <table className="print-table">
+                    <tbody>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>일반허가서 번호</td>
+                        <td>{permit.id}</td>
+                        <td style={{ fontWeight: "bold" }}>작업명</td>
+                        <td>{permit.title}</td>
+                      </tr>
+                      <tr>
+                        <td style={{ fontWeight: "bold" }}>보충허가 유형</td>
+                        <td>{getSupplementaryPermitTitle(permitType)}</td>
+                        <td style={{ fontWeight: "bold" }}>작업책임자</td>
+                        <td>{formData?.workSupervisor || ""}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              {/* 밀폐공간 작업 */}
+              {permitType === "confined-space" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 밀폐공간 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <thead>
+                          <tr>
+                            <th>점검항목</th>
+                            <th>기준</th>
+                            <th>측정값</th>
+                            <th>확인</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>산소농도</td>
+                            <td>18% ~ 23.5%</td>
+                            <td>{formData?.confinedSpace?.oxygenLevel || ""}</td>
+                            <td>{formData?.confinedSpace?.oxygenCheck ? "✓" : ""}</td>
+                          </tr>
+                          <tr>
+                            <td>가연성가스</td>
+                            <td>&lt; 10% LEL</td>
+                            <td>{formData?.confinedSpace?.gasLevel || ""}</td>
+                            <td>{formData?.confinedSpace?.gasCheck ? "✓" : ""}</td>
+                          </tr>
+                          <tr>
+                            <td>유해가스</td>
+                            <td>기준치 이하</td>
+                            <td>{formData?.confinedSpace?.toxicLevel || ""}</td>
+                            <td>{formData?.confinedSpace?.toxicCheck ? "✓" : ""}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <div style={{ marginTop: "10px" }}>
+                        <strong>감시자:</strong> {formData?.confinedSpace?.watcher || ""}
+                      </div>
+                      <div style={{ marginTop: "5px" }}>
+                        <strong>비상연락처:</strong> {formData?.confinedSpace?.emergencyContact || ""}
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 고소작업 */}
+              {permitType === "high-work" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 고소작업 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>작업높이</td>
+                            <td>{formData?.highWork?.height || ""} m</td>
+                            <td style={{ fontWeight: "bold" }}>작업플랫폼</td>
+                            <td>{formData?.highWork?.platform || ""}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>안전대 착용</td>
+                            <td>{formData?.highWork?.harness ? "✓ 착용" : "미착용"}</td>
+                            <td style={{ fontWeight: "bold" }}>안전난간 설치</td>
+                            <td>{formData?.highWork?.guardrail ? "✓ 설치" : "미설치"}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>날씨상태</td>
+                            <td>{formData?.highWork?.weather || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>풍속</td>
+                            <td>{formData?.highWork?.windSpeed || ""} m/s</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 굴착작업 */}
+              {permitType === "excavation" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 굴착작업 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>굴착깊이</td>
+                            <td>{formData?.excavation?.depth || ""} m</td>
+                            <td style={{ fontWeight: "bold" }}>굴착폭</td>
+                            <td>{formData?.excavation?.width || ""} m</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>지하매설물 확인</td>
+                            <td>{formData?.excavation?.utilityCheck ? "✓ 확인" : "미확인"}</td>
+                            <td style={{ fontWeight: "bold" }}>흙막이 설치</td>
+                            <td>{formData?.excavation?.shoring ? "✓ 설치" : "미설치"}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>경사면 안정성</td>
+                            <td>{formData?.excavation?.slopeStability || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>배수조치</td>
+                            <td>{formData?.excavation?.drainage ? "✓ 완료" : "미완료"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 중장비 작업 */}
+              {permitType === "heavy-equipment" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 중장비 작업 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>장비종류</td>
+                            <td>{formData?.heavyEquipment?.equipmentType || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>장비번호</td>
+                            <td>{formData?.heavyEquipment?.equipmentNumber || ""}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>운전자</td>
+                            <td>{formData?.heavyEquipment?.operator || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>자격증 확인</td>
+                            <td>{formData?.heavyEquipment?.licenseCheck ? "✓ 확인" : "미확인"}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>신호수 배치</td>
+                            <td>{formData?.heavyEquipment?.signalPerson || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>작업반경 통제</td>
+                            <td>{formData?.heavyEquipment?.areaControl ? "✓ 통제" : "미통제"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 전기작업 */}
+              {permitType === "electrical" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 전기작업 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>전압</td>
+                            <td>{formData?.electrical?.voltage || ""} V</td>
+                            <td style={{ fontWeight: "bold" }}>차단기 위치</td>
+                            <td>{formData?.electrical?.breakerLocation || ""}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>LOTO 시행</td>
+                            <td>{formData?.electrical?.loto ? "✓ 시행" : "미시행"}</td>
+                            <td style={{ fontWeight: "bold" }}>검전기 확인</td>
+                            <td>{formData?.electrical?.voltageTest ? "✓ 확인" : "미확인"}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>절연장갑 착용</td>
+                            <td>{formData?.electrical?.insulatedGloves ? "✓ 착용" : "미착용"}</td>
+                            <td style={{ fontWeight: "bold" }}>접지 설치</td>
+                            <td>{formData?.electrical?.grounding ? "✓ 설치" : "미설치"}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {/* 방사선 작업 */}
+              {permitType === "radiation" && (
+                <>
+                  <div className="print-section">
+                    <div className="print-section-header">2. 방사선 작업 안전점검</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <tbody>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>방사선원</td>
+                            <td>{formData?.radiation?.source || ""}</td>
+                            <td style={{ fontWeight: "bold" }}>선량률</td>
+                            <td>{formData?.radiation?.doseRate || ""} mSv/h</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>개인선량계 착용</td>
+                            <td>{formData?.radiation?.dosimeter ? "✓ 착용" : "미착용"}</td>
+                            <td style={{ fontWeight: "bold" }}>차폐조치</td>
+                            <td>{formData?.radiation?.shielding ? "✓ 설치" : "미설치"}</td>
+                          </tr>
+                          <tr>
+                            <td style={{ fontWeight: "bold" }}>관리구역 설정</td>
+                            <td>{formData?.radiation?.controlledArea ? "✓ 설정" : "미설정"}</td>
+                            <td style={{ fontWeight: "bold" }}>방사선관리자</td>
+                            <td>{formData?.radiation?.radiationOfficer || ""}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <div className="print-section">
+                <div className="print-section-header">3. 보충작업 승인</div>
+                <div className="print-section-content">
+                  <table className="print-table">
+                    <thead>
+                      <tr>
+                        <th>구분</th>
+                        <th>이름</th>
+                        <th>서명</th>
+                        <th>일시</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>작업책임자</td>
+                        <td>{formData?.workSupervisor || ""}</td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                      <tr>
+                        <td>안전관리자</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      )}
     </div>
   )
+}
+
+// 보충작업허가서 유형별 제목 가져오기
+function getSupplementaryPermitTitle(type: string) {
+  switch (type) {
+    case "confined-space":
+      return "밀폐공간 작업"
+    case "high-work":
+      return "고소작업"
+    case "excavation":
+      return "굴착작업"
+    case "heavy-equipment":
+      return "중장비 작업"
+    case "electrical":
+      return "전기작업"
+    case "radiation":
+      return "방사선 작업"
+    default:
+      return type
+  }
 }
