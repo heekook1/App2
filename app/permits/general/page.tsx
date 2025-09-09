@@ -17,7 +17,7 @@ import WorkCompletionSection from "@/components/work-completion-section"
 import PrintButton from "@/components/print-button"
 import GlobalPrintStyles from "@/components/global-print-styles"
 import { localStorageUtils, type StoredPermit } from "@/lib/local-storage"
-import { permitStore } from "@/lib/permit-store"
+import { permitStore } from "@/lib/permit-store-supabase"
 import { userStore } from "@/lib/user-store"
 
 interface GeneralRiskPermitData {
@@ -233,7 +233,7 @@ export default function GeneralRiskPermitPage() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Convert formData.approvers to the required format
     const approvers = formData.approvers
       .filter(approver => approver.username) // Only include selected approvers
@@ -254,7 +254,7 @@ export default function GeneralRiskPermitPage() {
       })
 
     // Use permitStore.create with selected approvers
-    const newPermit = permitStore.create({
+    const newPermit = await permitStore.create({
       type: "general",
       title: formData.workName || "일반위험 작업허가서",
       requester: {
@@ -272,7 +272,7 @@ export default function GeneralRiskPermitPage() {
     if (newPermit) {
       // Log activity
       if (user) {
-        userStore.logActivity(user.id, 'create_permit', `일반위험 작업허가서 생성: ${newPermit.title}`)
+        await userStore.logActivity(user.id, 'create_permit', `일반위험 작업허가서 생성: ${newPermit.title}`)
       }
       alert("결재 요청이 전송되었습니다.")
       router.push("/permits/list")

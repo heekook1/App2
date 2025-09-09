@@ -18,7 +18,7 @@ import WorkCompletionSection from "@/components/work-completion-section"
 import PrintButton from "@/components/print-button"
 import GlobalPrintStyles from "@/components/global-print-styles"
 import { localStorageUtils, type StoredPermit } from "@/lib/local-storage"
-import { permitStore } from "@/lib/permit-store"
+import { permitStore } from "@/lib/permit-store-supabase"
 import { userStore } from "@/lib/user-store"
 
 interface FireWorkPermitData {
@@ -289,7 +289,7 @@ export default function FireWorkPermitPage() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Convert formData.approvers to the required format
     const approvers = formData.approvers
       .filter(approver => approver.username) // Only include selected approvers
@@ -310,7 +310,7 @@ export default function FireWorkPermitPage() {
       })
 
     // Use permitStore.create with selected approvers
-    const newPermit = permitStore.create({
+    const newPermit = await permitStore.create({
       type: "fire",
       title: formData.workName || "화기작업 허가서",
       requester: {
@@ -328,7 +328,7 @@ export default function FireWorkPermitPage() {
     if (newPermit) {
       // Log activity
       if (user) {
-        userStore.logActivity(user.id, 'create_permit', `화기작업 허가서 생성: ${newPermit.title}`)
+        await userStore.logActivity(user.id, 'create_permit', `화기작업 허가서 생성: ${newPermit.title}`)
       }
       alert("결재 요청이 전송되었습니다.")
       router.push("/permits/list")

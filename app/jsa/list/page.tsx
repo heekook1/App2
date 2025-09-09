@@ -21,9 +21,11 @@ import {
   Trash2, 
   FileText,
   Plus,
-  Filter
+  Filter,
+  Loader2,
+  AlertTriangle
 } from "lucide-react"
-import { jsaStore, type JSAData } from "@/lib/jsa-store"
+import { jsaStore, type JSAData } from "@/lib/jsa-store-supabase"
 
 export default function JSAListPage() {
   const router = useRouter()
@@ -32,12 +34,27 @@ export default function JSAListPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState<string>("all")
   const [departmentFilter, setDepartmentFilter] = useState<string>("all")
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-  // Load JSA data
+  // Load JSA data from Supabase
   useEffect(() => {
-    const data = jsaStore.getAll()
-    setJsaList(data)
-    setFilteredList(data)
+    const loadJSAData = async () => {
+      try {
+        setLoading(true)
+        setError(null)
+        const data = await jsaStore.getAll()
+        setJsaList(data)
+        setFilteredList(data)
+      } catch (err) {
+        console.error('Error loading JSA data:', err)
+        setError('JSA 문서를 불러오는 중 오류가 발생했습니다.')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadJSAData()
   }, [])
 
   // Apply filters
@@ -71,12 +88,21 @@ export default function JSAListPage() {
   const departments = Array.from(new Set(jsaList.map(jsa => jsa.department))).filter(Boolean)
 
   // Delete JSA
-  const handleDelete = (id: string) => {
+  const handleDelete = async (id: string) => {
     if (confirm("정말로 이 JSA 문서를 삭제하시겠습니까?")) {
-      jsaStore.delete(id)
-      const updatedList = jsaStore.getAll()
-      setJsaList(updatedList)
-      setFilteredList(updatedList)
+      try {
+        const success = await jsaStore.delete(id)
+        if (success) {
+          const updatedList = await jsaStore.getAll()
+          setJsaList(updatedList)
+          setFilteredList(updatedList)
+        } else {
+          alert('삭제 중 오류가 발생했습니다.')
+        }
+      } catch (error) {
+        console.error('Error deleting JSA:', error)
+        alert('삭제 중 오류가 발생했습니다.')
+      }
     }
   }
 
@@ -113,6 +139,34 @@ export default function JSAListPage() {
       default:
         return status
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="w-6 h-6 animate-spin" />
+          <span>JSA 문서를 불러오는 중...</span>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">오류가 발생했습니다</h2>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              다시 시도
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (

@@ -23,10 +23,12 @@ import {
   Activity,
   CheckCircle,
   XCircle,
-  Clock
+  Clock,
+  Loader2,
+  AlertTriangle
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
-import { userStore, type User } from "@/lib/user-store"
+import { userStore, type User } from "@/lib/user-store-supabase"
 
 export default function UserManagementPage() {
   const router = useRouter()
@@ -46,6 +48,8 @@ export default function UserManagementPage() {
     byRole: { admin: 0, approver: 0, user: 0 },
     byDepartment: {} as Record<string, number>
   })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   // Form state
   const [formData, setFormData] = useState({
@@ -64,28 +68,55 @@ export default function UserManagementPage() {
       return
     }
     
-    loadUsers()
-    loadStats()
+    const initData = async () => {
+      setLoading(true)
+      await Promise.all([loadUsers(), loadStats()])
+    }
+    
+    initData()
   }, [currentUser, router])
 
-  const loadUsers = () => {
-    const allUsers = userStore.getAllUsers()
-    setUsers(allUsers)
-    setFilteredUsers(allUsers)
+  const loadUsers = async () => {
+    try {
+      setError(null)
+      const allUsers = await userStore.getAll()
+      setUsers(allUsers)
+      setFilteredUsers(allUsers)
+    } catch (err) {
+      console.error('Error loading users:', err)
+      setError('사용자 데이터를 불러오는 중 오류가 발생했습니다.')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const loadStats = () => {
-    const userStats = userStore.getUserStats()
-    setStats(userStats)
+  const loadStats = async () => {
+    try {
+      const allUsers = await userStore.getAll()
+      const statsData = {
+        total: allUsers.length,
+        active: allUsers.length, // all users are considered active in Supabase version
+        byRole: {
+          admin: allUsers.filter(u => u.role === 'admin').length,
+          approver: allUsers.filter(u => u.role === 'approver').length,
+          user: allUsers.filter(u => u.role === 'user').length
+        },
+        byDepartment: allUsers.reduce((acc, user) => {
+          if (user.department) {
+            acc[user.department] = (acc[user.department] || 0) + 1
+          }
+          return acc
+        }, {} as Record<string, number>)
+      }
+      setStats(statsData)
+    } catch (err) {
+      console.error('Error loading stats:', err)
+    }
   }
 
   // Filter users
   useEffect(() => {
     let filtered = users
-
-    if (showActiveOnly) {
-      filtered = filtered.filter(u => u.isActive)
-    }
 
     if (searchTerm) {
       filtered = filtered.filter(u => 
@@ -105,62 +136,77 @@ export default function UserManagementPage() {
     }
 
     setFilteredUsers(filtered)
-  }, [users, searchTerm, roleFilter, departmentFilter, showActiveOnly])
+  }, [users, searchTerm, roleFilter, departmentFilter])
 
-  const handleCreateUser = () => {
+  const handleCreateUser = async () => {
     if (!formData.username || !formData.name || !formData.email) return
 
     try {
-      userStore.createUser({
+      const createdUser = await userStore.create({
         username: formData.username,
-        email: formData.email,
-        name: formData.name,
-        department: formData.department,
-        role: formData.role
-      }, formData.password || undefined)
-
-      setIsCreateDialogOpen(false)
-      setFormData({ username: "", email: "", name: "", department: "", role: "user", password: "" })
-      loadUsers()
-      loadStats()
-      alert("사용자가 성공적으로 생성되었습니다.")
-    } catch (error) {
-      alert("사용자 생성 중 오류가 발생했습니다.")
-    }
-  }
-
-  const handleEditUser = () => {
-    if (!selectedUser) return
-
-    try {
-      userStore.updateUser(selectedUser.id, {
         email: formData.email,
         name: formData.name,
         department: formData.department,
         role: formData.role
       })
 
-      setIsEditDialogOpen(false)
-      setSelectedUser(null)
-      loadUsers()
-      loadStats()
-      alert("사용자 정보가 업데이트되었습니다.")
+      if (createdUser) {
+        setIsCreateDialogOpen(false)
+        setFormData({ username: "", email: "", name: "", department: "", role: "user", password: "" })
+        await loadUsers()
+        await loadStats()
+        alert("사용자가 성공적으로 생성되었습니다.")
+      } else {
+        alert("사용자 생성 중 오류가 발생했습니다.")
+      }
+    } catch (error) {
+      alert("사용자 생성 중 오류가 발생했습니다.")
+    }
+  }
+
+  const handleEditUser = async () => {
+    if (!selectedUser) return
+
+    try {
+      const updatedUser = await userStore.update(selectedUser.id, {
+        email: formData.email,
+        name: formData.name,
+        department: formData.department,
+        role: formData.role
+      })
+
+      if (updatedUser) {
+        setIsEditDialogOpen(false)
+        setSelectedUser(null)
+        await loadUsers()
+        await loadStats()
+        alert("사용자 정보가 업데이트되었습니다.")
+      } else {
+        alert("사용자 정보 업데이트 중 오류가 발생했습니다.")
+      }
     } catch (error) {
       alert("사용자 정보 업데이트 중 오류가 발생했습니다.")
     }
   }
 
-  const handleToggleUserStatus = (userId: string, isActive: boolean) => {
-    userStore.updateUser(userId, { isActive: !isActive })
-    loadUsers()
-    loadStats()
+  const handleToggleUserStatus = async (userId: string) => {
+    try {
+      const success = await userStore.delete(userId)
+      if (success) {
+        await loadUsers()
+        await loadStats()
+        alert('사용자가 삭제되었습니다.')
+      } else {
+        alert('사용자 삭제 중 오류가 발생했습니다.')
+      }
+    } catch (error) {
+      alert('사용자 삭제 중 오류가 발생했습니다.')
+    }
   }
 
   const handleResetPassword = (userId: string, userName: string) => {
-    const newPassword = userStore.resetPassword(userId)
-    if (newPassword) {
-      alert(`${userName}의 새 비밀번호: ${newPassword}`)
-    }
+    // Password reset functionality would need to be implemented in Supabase
+    alert('비밀번호 리셋 기능은 아직 구현되지 않았습니다.')
   }
 
   const openEditDialog = (user: User) => {
@@ -190,6 +236,34 @@ export default function UserManagementPage() {
       case 'approver': return '승인자'
       default: return '사용자'
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="flex items-center space-x-2">
+          <Loader2 className="w-6 h-6 animate-spin" />
+          <span>사용자 데이터를 불러오는 중...</span>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Card className="max-w-md">
+          <CardContent className="p-6 text-center">
+            <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+            <h2 className="text-xl font-semibold mb-2">오류가 발생했습니다</h2>
+            <p className="text-muted-foreground mb-4">{error}</p>
+            <Button onClick={() => window.location.reload()}>
+              다시 시도
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   if (currentUser?.role !== 'admin') {
@@ -403,11 +477,11 @@ export default function UserManagementPage() {
               </div>
               <div className="flex items-end">
                 <Button
-                  variant={showActiveOnly ? "default" : "outline"}
-                  onClick={() => setShowActiveOnly(!showActiveOnly)}
+                  variant="outline"
+                  disabled
                   className="w-full"
                 >
-                  {showActiveOnly ? "활성만 보기" : "전체 보기"}
+                  전체 보기
                 </Button>
               </div>
             </div>
@@ -447,15 +521,15 @@ export default function UserManagementPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={user.isActive ? "default" : "secondary"}>
-                        {user.isActive ? "활성" : "비활성"}
+                      <Badge variant="default">
+                        활성
                       </Badge>
                     </TableCell>
                     <TableCell>
                       {new Date(user.createdAt).toLocaleDateString("ko-KR")}
                     </TableCell>
                     <TableCell>
-                      {user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString("ko-KR") : "없음"}
+                      {user.lastLogin ? new Date(user.lastLogin).toLocaleString("ko-KR") : "없음"}
                     </TableCell>
                     <TableCell>
                       <div className="flex space-x-1">
@@ -474,11 +548,11 @@ export default function UserManagementPage() {
                           <Key className="w-3 h-3" />
                         </Button>
                         <Button
-                          variant={user.isActive ? "destructive" : "default"}
+                          variant="destructive"
                           size="sm"
-                          onClick={() => handleToggleUserStatus(user.id, user.isActive)}
+                          onClick={() => handleToggleUserStatus(user.id)}
                         >
-                          {user.isActive ? <XCircle className="w-3 h-3" /> : <CheckCircle className="w-3 h-3" />}
+                          <Trash2 className="w-3 h-3" />
                         </Button>
                       </div>
                     </TableCell>

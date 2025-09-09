@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Plus, Trash2, ArrowLeft, Save, FileText, Printer } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
-import { jsaStore, type JSAData, type JSAStep } from "@/lib/jsa-store"
+import { jsaStore, type JSAData, type JSAStep } from "@/lib/jsa-store-supabase"
 import AIChat from "@/components/ai-chat"
 
 
@@ -56,7 +56,7 @@ export default function JSAPage() {
     setFormData({ ...formData, [field]: value })
   }
 
-  const handleSave = () => {
+  const handleSave = async () => {
     try {
       // Validation
       if (!formData.workName.trim()) {
@@ -83,18 +83,22 @@ export default function JSAPage() {
       }
 
       // Save JSA data
-      const savedJSA = jsaStore.save({
+      const savedJSA = await jsaStore.save({
         ...formData,
         steps: steps,
         status: "completed"
       })
 
-      alert("위험성평가서(JSA)가 성공적으로 저장되었습니다!")
-      
-      // Redirect to list page or stay for printing
-      const goToList = confirm("저장된 JSA 목록을 보시겠습니까? (취소하면 현재 페이지에 머물러 인쇄할 수 있습니다.)")
-      if (goToList) {
-        router.push("/jsa/list")
+      if (savedJSA) {
+        alert("위험성평가서(JSA)가 성공적으로 저장되었습니다!")
+        
+        // Redirect to list page or stay for printing
+        const goToList = confirm("저장된 JSA 목록을 보시겠습니까? (취소하면 현재 페이지에 머물러 인쇄할 수 있습니다.)")
+        if (goToList) {
+          router.push("/jsa/list")
+        }
+      } else {
+        alert("저장 중 오류가 발생했습니다. 다시 시도해주세요.")
       }
       
     } catch (error) {
