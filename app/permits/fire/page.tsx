@@ -319,7 +319,10 @@ export default function FireWorkPermitPage() {
         email: "user@company.com",
       },
       approvers: approvers,
-      data: formData,
+      data: {
+        ...formData,
+        ...supplementaryData
+      },
     })
 
     if (newPermit) {

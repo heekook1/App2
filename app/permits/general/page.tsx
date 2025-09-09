@@ -263,7 +263,10 @@ export default function GeneralRiskPermitPage() {
         email: "user@company.com",
       },
       approvers: approvers,
-      data: formData,
+      data: {
+        ...formData,
+        ...supplementaryData
+      },
     })
 
     if (newPermit) {
