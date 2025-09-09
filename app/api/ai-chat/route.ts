@@ -38,7 +38,8 @@ export async function POST(request: NextRequest) {
 - 위험 요소에 대한 예방 대책 제시  
 - 필요한 보호구 및 안전 장비 추천
 - 관련 안전 규정 및 절차 안내
-- 한국어로 명확하고 실용적인 답변 제공`,
+- 한국어로 명확하고 실용적인 답변 제공
+- **중요**: 답변 시 마크다운 형식(#, ##, **, - 등)을 사용하지 말고 일반 텍스트로만 작성해주세요.`,
       mode: "blocking", // blocking 모드로 테스트
       user: "jsa-user-" + Date.now(), // 고유 사용자 식별자
       conversation_id: "" // 새 대화
