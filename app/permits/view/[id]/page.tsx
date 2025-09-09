@@ -18,6 +18,7 @@ import {
   Shield,
   Download,
   Printer,
+  Home,
 } from "lucide-react"
 import { useAuth } from "@/contexts/auth-context"
 import { permitStore, type Permit } from "@/lib/permit-store-supabase"
@@ -264,6 +265,10 @@ export default function PermitViewPage() {
               <Button variant="ghost" size="sm" onClick={() => router.push("/permits/list")} className="hover:bg-muted">
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 목록으로
+              </Button>
+              <Button variant="ghost" size="sm" onClick={() => router.push("/")} className="hover:bg-muted">
+                <Home className="w-4 h-4 mr-2" />
+                홈으로 가기
               </Button>
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <Shield className="w-5 h-5 text-primary-foreground" />
