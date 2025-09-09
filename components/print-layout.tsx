@@ -629,11 +629,134 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       </div>
                     </div>
                   </div>
+
+                  <div className="print-section">
+                    <div className="print-section-header">4. 출입자 확인</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <thead>
+                          <tr>
+                            <th>구분</th>
+                            <th>이름</th>
+                            <th>소속</th>
+                            <th>입실시간</th>
+                            <th>퇴실시간</th>
+                            <th>서명</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>작업자</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td>감시자</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="print-section">
+                    <div className="print-section-header">5. 가스농도 측정표</div>
+                    <div className="print-section-content">
+                      <table className="print-table">
+                        <thead>
+                          <tr>
+                            <th>측정시간</th>
+                            <th>산소농도(%)</th>
+                            <th>가연성가스(LEL%)</th>
+                            <th>유해가스(ppm)</th>
+                            <th>측정자</th>
+                            <th>서명</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+
+                  <div className="print-section">
+                    <div className="print-section-header">6. 작업완료 확인</div>
+                    <div className="print-section-content">
+                      <div style={{ marginBottom: "10px" }}>
+                        <strong>작업완료시간:</strong> _______________
+                      </div>
+                      <div style={{ marginBottom: "10px" }}>
+                        <strong>특이사항:</strong> 
+                        <div style={{ marginTop: "5px", minHeight: "60px", border: "1px solid #ccc", padding: "5px" }}></div>
+                      </div>
+                      <table className="print-table">
+                        <thead>
+                          <tr>
+                            <th>구분</th>
+                            <th>확인결과</th>
+                            <th>조치결과</th>
+                            <th>확인시간</th>
+                            <th>이름</th>
+                            <th>서명</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>담당자</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                          <tr>
+                            <td>안전관리자</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
                 </>
               )}
 
               {/* 고소작업 */}
-              {permitType === "high-work" && (
+              {permitType === "고소작업" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 고소작업 안전점검</div>
@@ -686,7 +809,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
               )}
 
               {/* 굴착작업 */}
-              {permitType === "excavation" && (
+              {permitType === "굴착작업" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 굴착작업 안전점검</div>
@@ -738,7 +861,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
               )}
 
               {/* 중장비 작업 */}
-              {permitType === "차량계 건설기계 중장비 사용" && (
+              {permitType === "중장비사용" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 중장비 작업 안전점검</div>
@@ -746,14 +869,14 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>공통 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.operatorLicense ? 'checked' : ''}`}></span> 운전자격 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.leaderSupport ? 'checked' : ''}`}></span> 지휘자 유도</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.supervisorGuide ? 'checked' : ''}`}></span> 작업지휘자(감독자) 유도</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.headGuard ? 'checked' : ''}`}></span> 헤드가드 설치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.wheelChock ? 'checked' : ''}`}></span> 휠 고임목 설치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.winchBrake ? 'checked' : ''}`}></span> 윈치브레이크 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.pulleyLoad ? 'checked' : ''}`}></span> 도르래 하중 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["차량계 건설기계 중장비 사용"]?.preWork?.hydraulicSystem ? 'checked' : ''}`}></span> 유압시스템 점검</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.operatorLicense ? 'checked' : ''}`}></span> 운전자격 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.leaderSupport ? 'checked' : ''}`}></span> 지휘자 유도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.supervisorGuide ? 'checked' : ''}`}></span> 작업지휘자(감독자) 유도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.headGuard ? 'checked' : ''}`}></span> 헤드가드 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.wheelChock ? 'checked' : ''}`}></span> 휠 고임목 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.winchBrake ? 'checked' : ''}`}></span> 윈치브레이크 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.pulleyLoad ? 'checked' : ''}`}></span> 도르래 하중 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["중장비사용"]?.preWork?.hydraulicSystem ? 'checked' : ''}`}></span> 유압시스템 점검</div>
                         </div>
                       </div>
                       
@@ -779,7 +902,7 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
               )}
 
               {/* 전기작업 */}
-              {permitType === "electrical" && (
+              {permitType === "전기작업" && (
                 <>
                   <div className="print-section">
                     <div className="print-section-header">2. 전기작업 안전점검</div>
@@ -787,28 +910,28 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 - 정전작업:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.switchCutoff ? 'checked' : ''}`}></span> 스위치 차단 및 LOTO 체결 완료</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.powerCheck ? 'checked' : ''}`}></span> 테스터기를 활용한 정전상태 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.residualCharge ? 'checked' : ''}`}></span> 검전기 등을 통한 잔류전하 확인</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.discharge ? 'checked' : ''}`}></span> 방전기구를 활용한 방전</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyDevice ? 'checked' : ''}`}></span> 활선경보기 등 안전장치 착용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.switchCutoff ? 'checked' : ''}`}></span> 스위치 차단 및 LOTO 체결 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.powerCheck ? 'checked' : ''}`}></span> 테스터기를 활용한 정전상태 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.residualCharge ? 'checked' : ''}`}></span> 검전기 등을 통한 잔류전하 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.discharge ? 'checked' : ''}`}></span> 방전기구를 활용한 방전</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.safetyDevice ? 'checked' : ''}`}></span> 활선경보기 등 안전장치 착용</div>
                         </div>
                       </div>
                       
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 중 - 활선작업:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.approachDistance ? 'checked' : ''}`}></span> 충전부 접근금지 거리 준수</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.liveWorkTools ? 'checked' : ''}`}></span> 활선작업용 기구 사용</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.qualifiedWorker ? 'checked' : ''}`}></span> 자격보유자 작업 시행</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.approachDistance ? 'checked' : ''}`}></span> 충전부 접근금지 거리 준수</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.liveWorkTools ? 'checked' : ''}`}></span> 활선작업용 기구 사용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.qualifiedWorker ? 'checked' : ''}`}></span> 자격보유자 작업 시행</div>
                         </div>
                       </div>
                       
                       <div style={{ marginBottom: "15px" }}>
                         <strong>기타 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.grounding ? 'checked' : ''}`}></span> 충분한 접지 실시</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.accessProhibition ? 'checked' : ''}`}></span> 비관계자 출입금지</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.grounding ? 'checked' : ''}`}></span> 충분한 접지 실시</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.preWork?.accessProhibition ? 'checked' : ''}`}></span> 비관계자 출입금지</div>
                         </div>
                       </div>
                       
@@ -830,8 +953,8 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginTop: "15px" }}>
                         <strong>작업 완료 후:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.breakerRecovery ? 'checked' : ''}`}></span> 누전차단기 투입 획복 조치</div>
-                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.siteCleanup ? 'checked' : ''}`}></span> 주변 정리정돈</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.completion?.breakerRecovery ? 'checked' : ''}`}></span> 누전차단기 투입 획복 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.["전기작업"]?.completion?.siteCleanup ? 'checked' : ''}`}></span> 주변 정리정돈</div>
                         </div>
                       </div>
                     </div>
@@ -927,8 +1050,8 @@ function getSupplementaryPermitTitle(type: string) {
   switch (type) {
     case "밀폐공간출입":
       return "밀폐공간출입"
-    case "차량계 건설기계 중장비 사용":
-      return "차량계 건설기계 중장비 사용"
+    case "중장비사용":
+      return "중장비사용"
     case "고소작업":
       return "고소작업"
     case "굴착작업":
