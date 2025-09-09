@@ -9,7 +9,8 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { useAuth } from "@/contexts/auth-context"
-import { Loader2, Shield } from "lucide-react"
+import { Loader2 } from "lucide-react"
+import Image from "next/image"
 
 export function LoginForm() {
   const [username, setUsername] = useState("")
@@ -36,8 +37,14 @@ export function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center space-y-4">
-          <div className="mx-auto w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-            <Shield className="w-6 h-6 text-primary-foreground" />
+          <div className="mx-auto w-16 h-16 relative">
+            <Image
+              src="/logo.png"
+              alt="Company Logo"
+              width={64}
+              height={64}
+              className="object-contain"
+            />
           </div>
           <div>
             <CardTitle className="text-2xl font-bold text-foreground">작업허가서 시스템</CardTitle>

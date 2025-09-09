@@ -14,12 +14,12 @@ import {
   XCircle,
   Users,
   LogOut,
-  Shield,
   List,
   Eye,
   Settings,
   BarChart3,
 } from "lucide-react"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { permitStore, type Permit } from "@/lib/permit-store"
@@ -116,8 +116,14 @@ function Dashboard() {
       <header className="border-b bg-card shadow-sm">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <Shield className="w-5 h-5 text-primary-foreground" />
+            <div className="w-10 h-10 relative">
+              <Image
+                src="/logo.png"
+                alt="Company Logo"
+                width={40}
+                height={40}
+                className="object-contain"
+              />
             </div>
             <div>
               <h1 className="text-xl font-bold text-foreground">안전작업허가서 시스템</h1>
