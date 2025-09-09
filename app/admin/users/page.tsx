@@ -196,8 +196,8 @@ export default function UserManagementPage() {
     return <div>접근 권한이 없습니다.</div>
   }
 
-  // Get unique departments for filter
-  const departments = [...new Set(users.map(u => u.department))]
+  // Get unique departments for filter (filter out empty strings)
+  const departments = [...new Set(users.map(u => u.department))].filter(dept => dept && dept.trim() !== '')
 
   return (
     <div className="min-h-screen bg-background">
