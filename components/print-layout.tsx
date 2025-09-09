@@ -570,14 +570,14 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.oxygenLevel && <div>• 산소농도 측정 완료</div>}
-                          {formData?.preWork?.gasCheck && <div>• 가연성가스 측정 완료</div>}
-                          {formData?.preWork?.ventilation && <div>• 환기장치 설치 완료</div>}
-                          {formData?.preWork?.rescueEquipment && <div>• 구조장비 준비 완료</div>}
-                          {formData?.preWork?.communicationDevice && <div>• 통신장비 확인 완료</div>}
-                          {formData?.preWork?.accessControl && <div>• 출입통제 조치 완료</div>}
-                          {formData?.preWork?.watcher && <div>• 감시자 배치 완료</div>}
-                          {formData?.preWork?.emergencyPlan && <div>• 비상계획 수립 완료</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.oxygenLevel ? 'checked' : ''}`}></span> 산소농도 측정 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.gasCheck ? 'checked' : ''}`}></span> 가연성가스 측정 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.ventilation ? 'checked' : ''}`}></span> 환기장치 설치 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.rescueEquipment ? 'checked' : ''}`}></span> 구조장비 준비 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.communicationDevice ? 'checked' : ''}`}></span> 통신장비 확인 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.accessControl ? 'checked' : ''}`}></span> 출입통제 조치 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.watcher ? 'checked' : ''}`}></span> 감시자 배치 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.emergencyPlan ? 'checked' : ''}`}></span> 비상계획 수립 완료</div>
                         </div>
                       </div>
                       <table className="print-table">
@@ -641,19 +641,19 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.safetyHarness && <div>• 안전대(안전그네) 착용</div>}
-                          {formData?.preWork?.openingProtection && <div>• 개구부 방호조치 (덮개, 안전난간 설치)</div>}
-                          {formData?.preWork?.clampConnection && <div>• 승강설비 클램프 연결상태 확인</div>}
-                          {formData?.preWork?.workPlatform && <div>• 작업발판 설치상태 확인</div>}
-                          {formData?.preWork?.safetyRail && <div>• 안전난간 (상부, 중간) 설치</div>}
-                          {formData?.preWork?.loadCapacity && <div>• 작업발판 및 통로 적재하중 확인</div>}
-                          {formData?.preWork?.wheelOutrigger && <div>• 이동식비계 바퀴고정 또는 아웃트리거 설치</div>}
-                          {formData?.preWork?.ladderInstallation && <div>• 사다리 설치상태 확인</div>}
-                          {formData?.preWork?.safetyDevices && <div>• 고소작업대/차 안전장치 작동확인</div>}
-                          {formData?.preWork?.safetyCertification && <div>• 안전인증품(비계, 안전대) 사용</div>}
-                          {formData?.preWork?.groundObstacles && <div>• 지상 장애물 제거</div>}
-                          {formData?.preWork?.signalControl && <div>• 신호 및 통제수 배치</div>}
-                          {formData?.preWork?.harnessRail && <div>• 안전대, 안전난간 부착설비 설치</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyHarness ? 'checked' : ''}`}></span> 안전대(안전그네) 착용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.openingProtection ? 'checked' : ''}`}></span> 개구부 방호조치 (덮개, 안전난간 설치)</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.clampConnection ? 'checked' : ''}`}></span> 승강설비 클램프 연결상태 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.workPlatform ? 'checked' : ''}`}></span> 작업발판 설치상태 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyRail ? 'checked' : ''}`}></span> 안전난간 (상부, 중간) 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.loadCapacity ? 'checked' : ''}`}></span> 작업발판 및 통로 적재하중 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.wheelOutrigger ? 'checked' : ''}`}></span> 이동식비계 바퀴고정 또는 아웃트리거 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.ladderInstallation ? 'checked' : ''}`}></span> 사다리 설치상태 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyDevices ? 'checked' : ''}`}></span> 고소작업대/차 안전장치 작동확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyCertification ? 'checked' : ''}`}></span> 안전인증품(비계, 안전대) 사용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.groundObstacles ? 'checked' : ''}`}></span> 지상 장애물 제거</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.signalControl ? 'checked' : ''}`}></span> 신호 및 통제수 배치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.harnessRail ? 'checked' : ''}`}></span> 안전대, 안전난간 부착설비 설치</div>
                         </div>
                       </div>
                       <table className="print-table">
@@ -675,9 +675,9 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginTop: "15px" }}>
                         <strong>작업 완료 후 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.completion?.equipmentStorage && <div>• 공구, 자재 등 정리정돈</div>}
-                          {formData?.completion?.fallPrevention && <div>• 상부에서 물건 낙하방지 조치</div>}
-                          {formData?.completion?.siteCleanup && <div>• 작업장 주변 정리</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.equipmentStorage ? 'checked' : ''}`}></span> 공구, 자재 등 정리정돈</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.fallPrevention ? 'checked' : ''}`}></span> 상부에서 물건 낙하방지 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.siteCleanup ? 'checked' : ''}`}></span> 작업장 주변 정리</div>
                         </div>
                       </div>
                     </div>
@@ -694,17 +694,17 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.buriedPipes && <div>• 매설배관 위치 파악 완료</div>}
-                          {formData?.preWork?.siteCondition && <div>• 작업장 지반상태 확인 완료</div>}
-                          {formData?.preWork?.collapsePrevention && <div>• 붕괴방지 개천판 설치</div>}
-                          {formData?.preWork?.accessControl && <div>• 작업장 근처 통행제한 조치</div>}
-                          {formData?.preWork?.weatherPrevention && <div>• 기후조건(비, 눈)에 따른 붕괴방지 조치</div>}
-                          {formData?.preWork?.buriedProtection && <div>• 매설배관 보호조치</div>}
-                          {formData?.preWork?.structureProtection && <div>• 건물, 구조물 근처 보호조치</div>}
-                          {formData?.preWork?.slopeProtection && <div>• 굴착면 경사면 및 사면 붕괴방지 조치</div>}
-                          {formData?.preWork?.passageInstallation && <div>• 굴착장소 통로설치</div>}
-                          {formData?.preWork?.materialStorage && <div>• 굴착토사, 자재 적치장소 확보</div>}
-                          {formData?.preWork?.perimeter && <div>• 굴착장소 주변 가설펜스</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.buriedPipes ? 'checked' : ''}`}></span> 매설배관 위치 파악 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.siteCondition ? 'checked' : ''}`}></span> 작업장 지반상태 확인 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.collapsePrevention ? 'checked' : ''}`}></span> 붕괴방지 개천판 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.accessControl ? 'checked' : ''}`}></span> 작업장 근처 통행제한 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.weatherPrevention ? 'checked' : ''}`}></span> 기후조건(비, 눈)에 따른 붕괴방지 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.buriedProtection ? 'checked' : ''}`}></span> 매설배관 보호조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.structureProtection ? 'checked' : ''}`}></span> 건물, 구조물 근처 보호조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.slopeProtection ? 'checked' : ''}`}></span> 굴착면 경사면 및 사면 붕괴방지 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.passageInstallation ? 'checked' : ''}`}></span> 굴착장소 통로설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.materialStorage ? 'checked' : ''}`}></span> 굴착토사, 자재 적치장소 확보</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.perimeter ? 'checked' : ''}`}></span> 굴착장소 주변 가설펜스</div>
                         </div>
                       </div>
                       <table className="print-table">
@@ -746,11 +746,11 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>공통 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.operatorQualification && <div>• 운전자격 확인</div>}
-                          {formData?.preWork?.signalPerson && <div>• 신호수 배치</div>}
-                          {formData?.preWork?.routeCheck && <div>• 이동경로 확인</div>}
-                          {formData?.preWork?.supervisorGuide && <div>• 작업지휘자(감독자) 유도</div>}
-                          {formData?.preWork?.parkingPrevention && <div>• 야간 또는 작업종료 시 사면 주차방지 조치</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.operatorQualification ? 'checked' : ''}`}></span> 운전자격 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.signalPerson ? 'checked' : ''}`}></span> 신호수 배치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.routeCheck ? 'checked' : ''}`}></span> 이동경로 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.supervisorGuide ? 'checked' : ''}`}></span> 작업지휘자(감독자) 유도</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.parkingPrevention ? 'checked' : ''}`}></span> 야간 또는 작업종료 시 사면 주차방지 조치</div>
                         </div>
                       </div>
                       
@@ -766,27 +766,27 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>크레인 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.craneOperator && <div>• 크레인 조종사 자격증 확인</div>}
-                          {formData?.preWork?.ratedLoad && <div>• 정격하중 표시</div>}
-                          {formData?.preWork?.safetyDevices && <div>• 안전장치 이상 유무 확인</div>}
-                          {formData?.preWork?.hookDevice && <div>• 후크 해지장치 확인</div>}
-                          {formData?.preWork?.weatherCondition && <div>• 기상조건(풍속, 비, 눈, 안개) 확인</div>}
-                          {formData?.preWork?.safetyInspection && <div>• 크레인 안전검사 여부</div>}
-                          {formData?.preWork?.workSupervisor && <div>• 작업지휘자(감독자) 배치</div>}
-                          {formData?.preWork?.slingEquipment && <div>• 슬링기구의 안전계수 확인</div>}
-                          {formData?.preWork?.craneGround && <div>• 크레인의 설치면 및 지반 상태확인</div>}
-                          {formData?.preWork?.craneProhibition && <div>• 크레인 작업반경 내 다른 작업금지</div>}
-                          {formData?.preWork?.hoistStopper && <div>• 호이스트크레인의 레일스토퍼 및 차량계 확인</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneOperator ? 'checked' : ''}`}></span> 크레인 조종사 자격증 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.ratedLoad ? 'checked' : ''}`}></span> 정격하중 표시</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyDevices ? 'checked' : ''}`}></span> 안전장치 이상 유무 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.hookDevice ? 'checked' : ''}`}></span> 후크 해지장치 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.weatherCondition ? 'checked' : ''}`}></span> 기상조건(풍속, 비, 눈, 안개) 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyInspection ? 'checked' : ''}`}></span> 크레인 안전검사 여부</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.workSupervisor ? 'checked' : ''}`}></span> 작업지휘자(감독자) 배치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.slingEquipment ? 'checked' : ''}`}></span> 슬링기구의 안전계수 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneGround ? 'checked' : ''}`}></span> 크레인의 설치면 및 지반 상태확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.craneProhibition ? 'checked' : ''}`}></span> 크레인 작업반경 내 다른 작업금지</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.hoistStopper ? 'checked' : ''}`}></span> 호이스트크레인의 레일스토퍼 및 차량계 확인</div>
                         </div>
                       </div>
                       
                       <div style={{ marginBottom: "15px" }}>
                         <strong>간트리크레인 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.supportRisk && <div>• 지지대 위험성 유무</div>}
-                          {formData?.preWork?.loadAppropriateness && <div>• 하중물 미끌림 및 적정하중 여부</div>}
-                          {formData?.preWork?.chainDamage && <div>• 체인, 와이어로프 손상 여부</div>}
-                          {formData?.preWork?.gantryStopper && <div>• 간트리크레인 과부하방지장치</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.supportRisk ? 'checked' : ''}`}></span> 지지대 위험성 유무</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.loadAppropriateness ? 'checked' : ''}`}></span> 하중물 미끄러짐 및 적정하중 여부</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.chainDamage ? 'checked' : ''}`}></span> 체인, 와이어로프 손상 여부</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.gantryStopper ? 'checked' : ''}`}></span> 간트리크레인 과부하방지장치</div>
                         </div>
                       </div>
                       
@@ -810,8 +810,8 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginTop: "15px" }}>
                         <strong>작업 완료 후 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.completion?.fallPrevention && <div>• 공구, 자재 등 낝하방지 조치</div>}
-                          {formData?.completion?.siteCleanup && <div>• 작업장 주변 정리</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.fallPrevention ? 'checked' : ''}`}></span> 공구, 자재 등 낙하방지 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.siteCleanup ? 'checked' : ''}`}></span> 작업장 주변 정리</div>
                         </div>
                       </div>
                     </div>
@@ -828,28 +828,28 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 - 정전작업:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.switchCutoff && <div>• 스위치 차단 및 LOTO 체결 완료</div>}
-                          {formData?.preWork?.powerCheck && <div>• 테스터기를 활용한 정전상태 확인</div>}
-                          {formData?.preWork?.residualCharge && <div>• 검전기 등을 통한 잔류전하 확인</div>}
-                          {formData?.preWork?.discharge && <div>• 방전기구를 활용한 방전</div>}
-                          {formData?.preWork?.safetyDevice && <div>• 활선경보기 등 안전장치 착용</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.switchCutoff ? 'checked' : ''}`}></span> 스위치 차단 및 LOTO 체결 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.powerCheck ? 'checked' : ''}`}></span> 테스터기를 활용한 정전상태 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.residualCharge ? 'checked' : ''}`}></span> 검전기 등을 통한 잔류전하 확인</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.discharge ? 'checked' : ''}`}></span> 방전기구를 활용한 방전</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.safetyDevice ? 'checked' : ''}`}></span> 활선경보기 등 안전장치 착용</div>
                         </div>
                       </div>
                       
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 중 - 활선작업:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.approachDistance && <div>• 충전부 접근금지 거리 준수</div>}
-                          {formData?.preWork?.liveWorkTools && <div>• 활선작업용 기구 사용</div>}
-                          {formData?.preWork?.qualifiedWorker && <div>• 자격보유자 작업 시행</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.approachDistance ? 'checked' : ''}`}></span> 충전부 접근금지 거리 준수</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.liveWorkTools ? 'checked' : ''}`}></span> 활선작업용 기구 사용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.qualifiedWorker ? 'checked' : ''}`}></span> 자격보유자 작업 시행</div>
                         </div>
                       </div>
                       
                       <div style={{ marginBottom: "15px" }}>
                         <strong>기타 안전조치:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.grounding && <div>• 충분한 접지 실시</div>}
-                          {formData?.preWork?.accessProhibition && <div>• 비관계자 출입금지</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.grounding ? 'checked' : ''}`}></span> 충분한 접지 실시</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.accessProhibition ? 'checked' : ''}`}></span> 비관계자 출입금지</div>
                         </div>
                       </div>
                       
@@ -871,8 +871,8 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginTop: "15px" }}>
                         <strong>작업 완료 후:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.completion?.breakerRecovery && <div>• 누전차단기 투입 획복 조치</div>}
-                          {formData?.completion?.siteCleanup && <div>• 주변 정리정돈</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.breakerRecovery ? 'checked' : ''}`}></span> 누전차단기 투입 획복 조치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.siteCleanup ? 'checked' : ''}`}></span> 주변 정리정돈</div>
                         </div>
                       </div>
                     </div>
@@ -889,11 +889,11 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginBottom: "15px" }}>
                         <strong>작업 전 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.preWork?.radiationSafety && <div>• 방사선 안전관리 측정 완료</div>}
-                          {formData?.preWork?.dosimeter && <div>• 개인선량계 착용</div>}
-                          {formData?.preWork?.shielding && <div>• 차폐조치 설치</div>}
-                          {formData?.preWork?.controlledArea && <div>• 관리구역 설정</div>}
-                          {formData?.preWork?.warningSign && <div>• 경고표지 부착</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.radiationSafety ? 'checked' : ''}`}></span> 방사선 안전관리 측정 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.dosimeter ? 'checked' : ''}`}></span> 개인선량계 착용</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.shielding ? 'checked' : ''}`}></span> 차폐조치 설치</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.controlledArea ? 'checked' : ''}`}></span> 관리구역 설정</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.preWork?.warningSign ? 'checked' : ''}`}></span> 경고표지 부착</div>
                         </div>
                       </div>
                       
@@ -917,8 +917,8 @@ export function PrintLayout({ permit }: PrintLayoutProps) {
                       <div style={{ marginTop: "15px" }}>
                         <strong>작업 완료 후 점검사항:</strong>
                         <div style={{ marginTop: "10px", marginLeft: "20px" }}>
-                          {formData?.completion?.radiationCheck && <div>• 방사선 선량 측정 완료</div>}
-                          {formData?.completion?.cleanup && <div>• 작업장 정리 완료</div>}
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.radiationCheck ? 'checked' : ''}`}></span> 방사선 선량 측정 완료</div>
+                          <div style={{ marginBottom: "5px" }}><span className={`print-checkbox ${formData?.completion?.cleanup ? 'checked' : ''}`}></span> 작업장 정리 완료</div>
                         </div>
                       </div>
                     </div>
