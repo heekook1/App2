@@ -36,8 +36,14 @@ export function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
-        <CardHeader className="text-center pt-8">
-          <div className="mx-auto w-16 h-10 relative -mt-6">
+        <CardHeader className="text-center pt-8 pb-2">
+          <div>
+            <CardTitle className="text-2xl font-bold text-foreground">작업허가서 시스템</CardTitle>
+            <CardDescription className="text-muted-foreground mt-2">안전한 작업을 위한 전산화 결재시스템</CardDescription>
+          </div>
+        </CardHeader>
+        <div className="px-6 pb-4">
+          <div className="mx-auto w-16 h-10 relative">
             <Image
               src="/logo.png"
               alt="Company Logo"
@@ -46,11 +52,7 @@ export function LoginForm() {
               className="object-contain"
             />
           </div>
-          <div className="mt-1">
-            <CardTitle className="text-2xl font-bold text-foreground">작업허가서 시스템</CardTitle>
-            <CardDescription className="text-muted-foreground mt-2">안전한 작업을 위한 전산화 결재시스템</CardDescription>
-          </div>
-        </CardHeader>
+        </div>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
