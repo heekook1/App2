@@ -108,10 +108,31 @@ export default function PermitViewPage() {
   }
 
   const canApprove = () => {
-    if (!user || !permit.approvers || permit.approvers.length === 0) return false
-    if (permit.status !== "pending" && permit.status !== "in-progress") return false
+    console.log('canApprove 체크:', {
+      user: user?.email,
+      approvers: permit.approvers,
+      approversLength: permit.approvers?.length,
+      status: permit.status,
+      currentApproverIndex: permit.currentApproverIndex,
+      currentApprover: permit.approvers?.[permit.currentApproverIndex]
+    })
+    
+    if (!user || !permit.approvers || permit.approvers.length === 0) {
+      console.log('조건 1 실패: user 없음 또는 approvers 없음')
+      return false
+    }
+    if (permit.status !== "pending" && permit.status !== "in-progress") {
+      console.log('조건 2 실패: status가 pending/in-progress가 아님:', permit.status)
+      return false
+    }
     const currentApprover = permit.approvers[permit.currentApproverIndex]
-    return currentApprover?.email === user.email && currentApprover?.status === "pending"
+    const canApproveResult = currentApprover?.email === user.email && currentApprover?.status === "pending"
+    console.log('최종 결과:', canApproveResult, {
+      currentApproverEmail: currentApprover?.email,
+      userEmail: user.email,
+      currentApproverStatus: currentApprover?.status
+    })
+    return canApproveResult
   }
 
   const handleApprove = async () => {
