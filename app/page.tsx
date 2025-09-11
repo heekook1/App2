@@ -307,12 +307,12 @@ function Dashboard() {
                   <Button
                     variant="outline"
                     className="justify-start h-16 bg-transparent"
-                    onClick={() => alert("시스템 설정 기능 (개발 예정)")}
+                    onClick={() => router.push("/admin/settings")}
                   >
                     <div className="flex flex-col items-start">
                       <Settings className="w-5 h-5 mb-1" />
                       <span className="text-sm font-medium">시스템 설정</span>
-                      <span className="text-xs text-muted-foreground">환경 설정</span>
+                      <span className="text-xs text-muted-foreground">허가서 관리</span>
                     </div>
                   </Button>
                 </CardContent>
