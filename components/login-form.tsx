@@ -37,7 +37,7 @@ export function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center pt-8">
-          <div className="mx-auto w-16 h-10 relative">
+          <div className="mx-auto w-16 h-10 relative -mt-2">
             <Image
               src="/logo.png"
               alt="Company Logo"
@@ -46,7 +46,7 @@ export function LoginForm() {
               className="object-contain"
             />
           </div>
-          <div>
+          <div className="mt-1">
             <CardTitle className="text-2xl font-bold text-foreground">작업허가서 시스템</CardTitle>
             <CardDescription className="text-muted-foreground mt-2">안전한 작업을 위한 전산화 결재시스템</CardDescription>
           </div>
