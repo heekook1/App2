@@ -16,7 +16,6 @@ import {
   Flame,
   AlertTriangle,
   Shield,
-  Download,
   Printer,
   Home,
 } from "lucide-react"
@@ -25,7 +24,7 @@ import { permitStore, type Permit } from "@/lib/permit-store-supabase"
 import { localStorageUtils } from "@/lib/local-storage"
 import { userStore } from "@/lib/user-store-supabase"
 import { PrintLayout } from "@/components/print-layout"
-import { generatePermitPDF, printPermit } from "@/lib/pdf-utils"
+import { printPermit } from "@/lib/pdf-utils"
 
 export default function PermitViewPage() {
   const router = useRouter()
@@ -197,16 +196,6 @@ export default function PermitViewPage() {
     setIsProcessing(false)
   }
 
-  const handleDownloadPDF = async () => {
-    try {
-      await generatePermitPDF(permit, permit.type)
-      alert("PDF 다운로드가 시작되었습니다.")
-    } catch (error) {
-      console.error("PDF 생성 오류:", error)
-      alert("PDF 생성 중 오류가 발생했습니다.")
-    }
-  }
-
   const handlePrint = () => {
     printPermit()
   }
@@ -300,15 +289,6 @@ export default function PermitViewPage() {
               </div>
             </div>
             <div className="flex items-center space-x-2">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleDownloadPDF}
-                className="border-border hover:bg-muted bg-transparent"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                PDF 다운로드
-              </Button>
               <Button
                 variant="outline"
                 size="sm"
