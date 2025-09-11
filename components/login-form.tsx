@@ -37,12 +37,12 @@ export function LoginForm() {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md shadow-lg">
         <CardHeader className="text-center pt-8">
-          <div className="mx-auto w-20 h-12 relative">
+          <div className="mx-auto w-16 h-10 relative">
             <Image
               src="/logo.png"
               alt="Company Logo"
-              width={71}
-              height={45}
+              width={60}
+              height={38}
               className="object-contain"
             />
           </div>
